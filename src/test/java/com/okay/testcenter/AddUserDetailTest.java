@@ -82,18 +82,6 @@ public class AddUserDetailTest {
         logger.info("[addUserDetailList]" + JSONObject.toJSONString(addUserDetailList));
     }
 
-    @Test
-    public void testJson() {
-
-        String response = "{\"code\":0,\"msg\":\"success\",\"data\":{\"password\":\"484647\",\"system_id\":81951487243},\"requestid\":\"qa_041817550842\"}";
-
-        JSONObject accountInfo = JSON.parseObject(response);
-        JSONObject data = JSON.parseObject(accountInfo.getString("data"));
-        Long account = (Long) data.get("system_id");
-        String pwd = data.getString("password");
-        logger.info("account==" + account);
-        logger.info("pwd==" + pwd);
-    }
 
 
     @Test
