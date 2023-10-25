@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.EnvMapper">
+
+
+    <!--<findEnvList>-->
+    <select id="findEnvList" parameterType="int" resultType="com.okay.testcenter.domain.Env">
+        SELECT id,name
+        from env
+
+    </select>
+
+    <!--<findEnvByName>-->
+    <select id="findEnvByName" parameterType="string" resultType="com.okay.testcenter.domain.Env">
+        SELECT address,port
+        from env
+        WHERE name like #{0}
+
+    </select>
+
+    <!--<findEnvById>-->
+    <select id="findEnvById" parameterType="int" resultType="com.okay.testcenter.domain.Env">
+        SELECT address,port
+        from env
+        WHERE ID=#{0}
+
+    </select>
+
+</mapper>

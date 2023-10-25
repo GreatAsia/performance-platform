@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.LinkEnvProjectMapper">
+
+
+    <!--<insertLinkEnvProject >-->
+    <insert id="insertLinkEnvProject" parameterType="com.okay.testcenter.domain.middle.LinkEnvProject">
+      INSERT INTO link_env_project(ID,PROJECT_ID,ENV_ID,URL_HEADER,UNAME,PWD)
+      values (#{id},#{project_id},#{env_id},#{url_header},#{uname},#{pwd})
+    </insert>
+
+    <!--<updateLinkEnvProject>-->
+    <update id="updateLinkEnvProject" parameterType="com.okay.testcenter.domain.middle.LinkEnvProject">
+        UPDATE link_env_project
+        SET PROJECT_ID=#{project_id},ENV_ID=#{env_id},URL_HEADER=#{url_header},UNAME=#{uname},PWD=#{pwd}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteLinkEnvProject>-->
+    <delete id="deleteLinkEnvProject" parameterType="int">
+        DELETE FROM link_env_project
+        WHERE ID=#{0}
+    </delete>
+
+    <!--<findLinkEnvProjectById>-->
+    <select id="findLinkEnvProjectById" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.LinkEnvProject">
+        SELECT *
+        from link_env_project
+        WHERE ID=#{0}
+    </select>
+
+    <!--<findLinkEnvProjectByProjectId>-->
+    <select id="findLinkEnvProjectByProjectId" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.LinkEnvProject">
+        SELECT *
+        from link_env_project
+        WHERE PROJECT_ID=#{0}
+    </select>
+
+
+    <!--<findLinkEnvProjectByProjectList>-->
+    <select id="findLinkEnvProjectByProjectList" parameterType="com.okay.testcenter.domain.middle.LinkEnvProject"
+            resultType="com.okay.testcenter.domain.middle.LinkEnvProject">
+        SELECT l.id,l.project_id,p.name AS project_name,e.name AS env_name,l.env_id,l.url_header,l.uname,l.pwd
+        FROM link_env_project l, middle_project p,env e
+        WHERE l.project_id = p.id AND l.env_id = e.id
+        ORDER By l.id
+    </select>
+
+    <!--<findLinkEnvProjectByProjectName>-->
+    <select id="findLinkEnvProjectByProjectName" parameterType="com.okay.testcenter.domain.middle.LinkEnvProject"
+            resultType="com.okay.testcenter.domain.middle.LinkEnvProject">
+        SELECT l.id,l.project_id,p.name AS project_name,e.name AS env_name,l.env_id,l.url_header,l.uname,l.pwd
+        FROM link_env_project l, middle_project p,env e
+        WHERE l.project_id = p.id AND l.env_id = e.id AND p.name LIKE CONCAT('%',#{0},'%')
+        ORDER By l.id
+    </select>
+
+
+</mapper>

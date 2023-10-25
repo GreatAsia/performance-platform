@@ -1,0 +1,61 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" th:href="@{/image/favicon-32x32.png}" sizes="32x32">
+    <link rel="icon" type="image/png" th:href="@{/image/favicon-16x16.png}" sizes="16x16">
+    <title>QA测试平台</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/yahei.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/buttons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-table.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" th:src="@{/js/html/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/popper.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/bootstrap.min.js}"></script>
+    <!-- Icons -->
+    <script type="text/javascript" th:src="@{/js/html/feather.min.js}"></script>
+    <!-- Graphs -->
+    <script type="text/javascript" th:src="@{/js/html/Chart.min.js}"></script>
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript" th:src="@{/js/html/echarts.js}"></script>
+    <!-- 引入 bootstrap-table -->
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-table-zh-CN.min.js}"></script>
+    <!-- 引入 bootstrap-select -->
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-select.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/defaults-zh_CN.min.js}"></script>
+    <!--引入 bootstrap-paginator-->
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-paginator.min.js}"></script>
+
+</head>
+<body bgcolor="#a9a9a9">
+<!--上面的搜索-->
+<div th:fragment="navbar_search(name)"
+     class="navbar navbar-dark sticky-top bg-info flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/api/home">OKAY-QA测试平台</a>
+    <div class="th-inner" style="float:left">
+        <input class="form-control navbar-brand col-sm-3 col-md-2 mr-0" th:class="bg-light" type="text"
+               id="searchName" th:placeholder="${name}">
+        &nbsp&nbsp
+        <button class="btn btn-primary btn-sm" id="search" onclick="search()">搜索</button>
+    </div>
+    <a href="/logout" class="navbar-brand col-sm-8 col-md-1 mr-0" id="logouts">退出&nbsp&nbsp</a>
+</div>
+<div class="page-error"
+     style="display: flex;-webkit-box-align: center; align-items: center;justify-content: center;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;min-height: 100vh;">
+    <h1 style="margin: 10px;color: #F44336"><i class="fa fa-exclamation-circle"></i> 页面404</h1>
+    <!--<p>页面未找到</p>-->
+    <p><a href="/api/home">返回首页</a></p>
+</div>
+</body>
+</html>

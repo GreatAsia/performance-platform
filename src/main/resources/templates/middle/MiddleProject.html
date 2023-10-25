@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/middle/middle.js}"></script>
+    <script type="text/javascript" th:src="@{/js/middle/middleProject.js}"></script>
+</head>
+<body>
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>middle</a></li>
+                <li class="breadcrumb-item active"><a>project</a></li>
+            </ol>
+
+            <!-- 按钮触发模态框 -->
+            <a href="javascript:void(0)" class="btn  btn-primary "
+               onclick="showAddProject(this)">添加项目</a>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>项目</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr th:each="middleProject: ${middleProjectList.getList()}">
+                    <td th:text="${middleProject.id}"></td>
+                    <td th:text="${middleProject.name}"></td>
+                    <td>
+                        <a href="javascript:void(0)" th:data-id="${middleProject.id}" th:data-name="${middleProject.name}"
+                           class="btn  btn-sm btn-info "
+                           onclick="showUpdateProject(this)">修改</a>
+
+                        <a href="javascript:void(0)" th:data-id="${middleProject.id}" class="btn btn-sm btn-danger"
+                           onclick="showDeleteModal(this)">删除</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+            <nav th:id="switchPageModel"
+                 th:replace="html/mainfragment :: switchPageInfo(${middleProjectList})">
+            </nav>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+<!--删除模块确认的模态框-->
+<div th:replace="html/mainfragment :: deleteModal">
+</div>
+
+
+<!--添加模块模态框（Modal）-->
+<div th:fragment="addModal" class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title 	" id="myModalLabel">
+                    添加项目
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">项目名称:</td>
+                        <td><input  class="form-control" id="addProjectName" type="text" name="modelName"
+                             placeholder=""></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">返回</button>
+                <button type="button" id="addModelID" class="btn btn-sm btn-primary" onclick="addProject()">提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!--修改模块模态框-->
+<div th:fragment="updateModal" class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">修改项目</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">项目ID:</td>
+                        <td><input  class="form-control" id="updateID" type="text" name="updateID"
+                                placeholder="" readonly="readonly"></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">项目名称:</td>
+                        <td><input  class="form-control" id="updateProjectName" type="text" name="updateProjectName"
+                                 placeholder="">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">返回</button>
+                <button type="button"  class="btn btn-sm btn-primary" onclick="updateProjectModel()">提交
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $("input").css("background", "rgba(255,255,255,0.1)");
+    $("input").css("height", "35px");
+    $("input").css("width", "400");
+    $("input").css("overflow", "auto");
+</script>
+
+</body>
+
+
+</html>

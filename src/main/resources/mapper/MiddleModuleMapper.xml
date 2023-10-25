@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleModuleMapper">
+
+
+    <!--<insertMiddleModule >-->
+    <insert id="insertMiddleModule" parameterType="com.okay.testcenter.domain.middle.MiddleModule">
+      INSERT INTO middle_module(ID,PROJECT_ID,NAME,COMMENTS)
+      values (#{id},#{project_id},#{name},#{comments})
+    </insert>
+
+
+    <!--<updateMiddleModule>-->
+    <update id="updateMiddleModule" parameterType="com.okay.testcenter.domain.middle.MiddleModule">
+        UPDATE middle_module
+        SET PROJECT_ID=#{project_id},NAME=#{name},COMMENTS=#{comments}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteMiddleModule>-->
+    <delete id="deleteMiddleModule" parameterType="int">
+        DELETE FROM middle_module
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findMiddleModuleById>-->
+    <select id="findMiddleModuleById" parameterType="int" resultType="com.okay.testcenter.domain.middle.MiddleModule">
+        SELECT ID,PROJECT_ID,NAME,COMMENTS
+        from middle_module
+        WHERE ID=#{0}
+    </select>
+
+    <!--<findMiddleModuleByName>-->
+    <select id="findMiddleModuleByName" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddleModule">
+        SELECT ID,PROJECT_ID,NAME,COMMENTS
+        from middle_module
+        WHERE name like #{0}
+    </select>
+
+
+    <!--<findMiddleModuleList>-->
+    <select id="findMiddleModuleList" parameterType="com.okay.testcenter.domain.middle.MiddleModule"
+            resultType="com.okay.testcenter.domain.middle.MiddleModule">
+        SELECT m.id,m.project_id,m.name,m.comments,p.name AS project_name
+        from middle_module m, middle_project p
+        where m.project_id = p.id
+    </select>
+
+
+    <!--findMiddleModuleByProjectId-->
+    <select id="findMiddleModuleByProjectId" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddleModule">
+        SELECT m.id,m.project_id,m.name,m.comments,p.name AS project_name
+        from middle_module m, middle_project p
+        where  m.project_id = p.id and m.project_id=#{0}
+    </select>
+
+
+</mapper>

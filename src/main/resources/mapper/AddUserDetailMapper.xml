@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.tool.AddUserDetailMapper">
+
+
+    <!--<insertDetail >-->
+    <insert id="insertDetail" parameterType="com.okay.testcenter.domain.middle.AddUserDetail">
+      INSERT INTO add_user_detail(ID,HISTORYID,ACCOUNT,PWD,TOKEN,COOKIES)
+      values (#{id},#{historyId},#{account},#{pwd},#{token},#{cookies})
+    </insert>
+
+
+    <!--<updateDetail>-->
+    <update id="updateDetail" parameterType="com.okay.testcenter.domain.middle.AddUserDetail">
+        UPDATE add_user_detail
+        SET HISTORYID=#{historyId},ACCOUNT=#{account},PWD=#{pwd},TOKEN=#{token},COOKIES=#{cookies},UPDATETIME=#{updateTime}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteDetail>-->
+    <delete id="deleteDetail" parameterType="int">
+        DELETE FROM add_user_detail
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findDetailByAccount>-->
+    <select id="findDetailByAccount" parameterType="int" resultType="com.okay.testcenter.domain.middle.AddUserDetail">
+        SELECT *
+        from add_user_detail
+        WHERE ACCOUNT=#{0}
+    </select>
+
+    <!--<findDetailByHistoryId>-->
+    <select id="findDetailByHistoryId" parameterType="int" resultType="com.okay.testcenter.domain.middle.AddUserDetail">
+        SELECT d.id,d.account,d.pwd,d.token,d.cookies,d.historyId,d.updateTime,h.userType,h.totalCount
+        FROM add_user_detail d,add_user_history h
+        WHERE d.historyId=#{0} AND d.historyId=h.id
+    </select>
+
+
+    <!--<findDetailList>-->
+    <select id="findDetailList" parameterType="com.okay.testcenter.domain.middle.AddUserDetail"
+            resultType="com.okay.testcenter.domain.middle.AddUserDetail">
+        SELECT *
+        FROM add_user_detail
+        ORDER BY ID DESC
+    </select>
+
+
+</mapper>

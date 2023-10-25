@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/job/jobEdit.js}"></script>
+    <script type="text/javascript" th:src="@{/js/job/job.js}"></script>
+</head>
+<body>
+<nav th:replace="html/mainfragment :: navbar_search('请输入任务名')"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>job</a></li>
+                <li class="breadcrumb-item active"><a>list</a></li>
+            </ol>
+
+            <!-- 按钮触发模态框 -->
+            <a href="javascript:void(0)" class="btn btn-success btn-primary "
+               onclick="showAddModal(this)">添加任务</a>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>任务ID</th>
+                    <th>任务名称</th>
+                    <th>任务组名</th>
+                    <th>任务CRON</th>
+                    <th>任务状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr th:each="job: ${jobList.list}">
+                    <td th:text="${job.id}"></td>
+                    <td th:text="${job.jobName}"></td>
+                    <td th:text="${job.jobGroup}"></td>
+                    <td th:text="${job.cron}"></td>
+                    <td th:style="${job.status eq '0'} ?  'color:red' : 'color:green'"
+                        th:text="${job.status eq '0'}?  '已停止' : '运行中'"></td>
+                    <td>
+                        <a href="javascript:void(0)" th:data-Id="${job.id}"
+                           th:data-jobName="${job.jobName}"
+                           th:data-jobGroup="${job.jobGroup}"
+                           th:data-cron="${job.cron}"
+                           class="btn  btn-sm btn-warning "
+                           onclick="pauseJob(this)">暂停</a>
+                        <a href="javascript:void(0)" th:data-id="${job.id}"
+                           th:data-jobName="${job.jobName}"
+                           th:data-jobGroup="${job.jobGroup}"
+                           th:data-cron="${job.cron}"
+                           class="btn  btn-sm btn-info "
+                           onclick="resumeJob(this)">恢复</a>
+                        <a href="javascript:void(0)" th:data-id="${job.id}"
+                           th:data-jobName="${job.jobName}"
+                           th:data-jobGroup="${job.jobGroup}"
+                           th:data-cron="${job.cron}"
+                           th:data-jobStatus="${job.status}"
+                           class="btn  btn-sm btn-success "
+                           onclick="showUpdateModal(this)">修改</a>
+                        <a href="javascript:void(0)" th:data-id="${job.id}"
+                           class="btn btn-sm btn-danger"
+                           onclick="showDeleteModal(this)">删除</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <nav th:id="switchPageModel"
+                 th:replace="html/mainfragment :: switchPageInfo(${jobList})">
+            </nav>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--添加任务模态框（Modal）-->
+<div th:fragment="addModal" class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myModalLabel">
+                    添加任务
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">任务名称:</td>
+                        <td>
+                            <input  class="form-control" id="addModelJobName" type="text" name="addModelJobName"
+                                   placeholder=""></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">任务组名:</td>
+                        <td>
+                            <input  class="form-control" id="addModelGroupName" type="text" name="addModelGroupName"
+                                   placeholder=""></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">任务CRON:</td>
+                        <td>
+                            <input  class="form-control" id="addModelJobCron" type="text" name="addModelJobCron"
+                                 placeholder="">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">任务状态:</td>
+                        <td>
+                            <input  class="form-control" id="addModelJobStatus" type="text" name="addModelJobStatus"
+                               placeholder="">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">返回</button>
+                <button type="button" id="addModelID" class="btn btn-sm btn-primary" onclick="addJob()">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--修改用例模态框-->
+<div th:fragment="updateModal" class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">修改任务</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">任务名称:</td>
+                        <td>
+                            <input  class="form-control" id="updateModelJobName" type="text" name="updateModelJobName"
+                                   placeholder=""></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">任务组名:</td>
+                        <td>
+                            <input  class="form-control" id="updateModelGroupName" type="text" name="updateModelGroupName"
+                                 placeholder=""></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">任务CRON:</td>
+                        <td><input  class="form-control" id="updateModelJobCron" type="text" name="updateModelJobCron"
+                                 placeholder="">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">任务状态:</td>
+                        <td><input  class="form-control" id="updateModelJobStatus" type="text" name="updateModelJobStatus"
+                                    placeholder="">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">返回</button>
+                <button type="button" id="updateID" class="btn btn-sm btn-primary" onclick="updateJob()">提交</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--删除模块确认的模态框-->
+<div th:replace="html/mainfragment :: deleteModal">
+</div>
+
+
+<script>
+    $("input").css("background", "rgba(255,255,255,0.1)");
+    $("input").css("height", "35px");
+    $("input").css("width", "400");
+    $("input").css("overflow", "auto");
+</script>
+
+
+</body>
+
+
+</html>

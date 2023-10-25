@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddlePerformanceSetMapper">
+
+
+    <!--<insert >-->
+    <insert id="insert" parameterType="com.okay.testcenter.domain.middle.MiddlePerformanceSet">
+      INSERT INTO middle_performance_set(ID,PLAN_SET,SET_NAME)
+      values (#{id},#{plan_set},#{set_name})
+    </insert>
+
+
+    <!--<update>-->
+    <update id="update" parameterType="com.okay.testcenter.domain.middle.MiddlePerformanceSet">
+        UPDATE middle_performance_set
+        SET PLAN_SET=#{plan_set},SET_NAME=#{set_name}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<delete>-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM middle_performance_set
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findByName>-->
+    <select id="findByName" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceSet">
+        SELECT *
+        from middle_performance_set
+        WHERE SET_NAME LIKE  CONCAT('%',#{0},'%')
+
+    </select>
+
+
+    <!--<findById>-->
+    <select id="findById" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceSet">
+        SELECT *
+        from middle_performance_set
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findList>-->
+    <select id="findList" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceSet">
+        SELECT *
+        FROM middle_performance_set
+        ORDER BY id DESC
+    </select>
+
+
+
+
+
+</mapper>

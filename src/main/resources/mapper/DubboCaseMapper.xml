@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.dubbo.DubboCaseMapper">
+
+
+    <!--<insertDubboInterface >-->
+    <insert id="insertDubboInterface" parameterType="com.okay.testcenter.domain.dubbo.DubboCase">
+      INSERT INTO dubbo_case(ID,CASENAME,MODEL,INTERFACECLASSNAME,METHODNAME,REQUESTTYPE,PARAMS,CHECKDATA,CREATETIME,EDITTIME,TYPE,VERSION,ENVID)
+      values (#{id},#{caseName},#{model},#{interFaceClassName},#{methodName},#{requestType},#{params},#{checkData},#{createTime},#{editTime},#{type},#{version},#{envId})
+    </insert>
+
+
+    <!--<updateDubboInterface>-->
+    <update id="updateDubboInterface" parameterType="com.okay.testcenter.domain.dubbo.DubboCase">
+        UPDATE dubbo_case
+        SET CASENAME=#{caseName},MODEL=#{model},INTERFACECLASSNAME=#{interFaceClassName},METHODNAME=#{methodName},REQUESTTYPE=#{requestType},PARAMS=#{params},CHECKDATA=#{checkData},CREATETIME=#{createTime},EDITTIME=#{editTime},TYPE=#{type},VERSION=#{version},ENVID=#{envId}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteDubboInterfaceById>-->
+    <delete id="deleteDubboInterfaceById" parameterType="int">
+        DELETE FROM dubbo_case
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findDubboInterfaceById>-->
+    <select id="findDubboInterfaceById" parameterType="int" resultType="com.okay.testcenter.domain.dubbo.DubboCase">
+        SELECT d.ID,d.CASENAME,m.name,d.PARAMS,d.CHECKDATA,d.MODEL,d.INTERFACECLASSNAME,d.METHODNAME,d.REQUESTTYPE,d.TYPE,d.VERSION,d.ENVID
+        FROM dubbo_case d,dubbo_module m
+        WHERE d.model = m.id and d.id=#{0}
+    </select>
+
+
+    <!--<findDubbocaseByName>-->
+    <select id="findDubbocaseByName" parameterType="String"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCase">
+        SELECT d.ID,d.CASENAME,m.name,d.PARAMS,d.CHECKDATA,d.MODEL,d.INTERFACECLASSNAME,d.METHODNAME,d.REQUESTTYPE,d.TYPE,d.VERSION,d.ENVID
+        FROM dubbo_case d,dubbo_module m
+        WHERE d.model = m.id AND d.caseName LIKE CONCAT('%',#{0},'%')
+    </select>
+
+
+    <!--<findDubboInterfaceListByModel>-->
+    <select id="findDubboInterfaceListByModel" parameterType="int"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCase">
+        SELECT d.ID,d.CASENAME,m.name,d.PARAMS,d.CHECKDATA,d.MODEL,d.INTERFACECLASSNAME,d.METHODNAME,d.REQUESTTYPE,d.TYPE,d.VERSION,d.ENVID
+        FROM dubbo_case d,dubbo_module m
+        WHERE d.model = m.id and d.model=#{0}
+    </select>
+
+    <!--<findDubboInterfaceListByModelAndEnv>-->
+    <select id="findDubboInterfaceListByModelAndEnv" parameterType="int"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCase">
+        SELECT d.ID,d.CASENAME,m.name,d.PARAMS,d.CHECKDATA,d.MODEL,d.INTERFACECLASSNAME,d.METHODNAME,d.REQUESTTYPE,d.TYPE,d.VERSION,d.ENVID
+        FROM dubbo_case d,dubbo_module m
+        WHERE d.model = m.id and d.model=#{param1} and d.envId=#{param2}
+    </select>
+
+
+    <!--<findDubboInterfaceListByModelName>-->
+    <select id="findDubboInterfaceListByModelName" parameterType="String"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCase">
+        SELECT d.ID,d.CASENAME,m.name,d.PARAMS,d.CHECKDATA,d.MODEL,d.INTERFACECLASSNAME,d.METHODNAME,d.REQUESTTYPE,d.TYPE,d.VERSION,d.ENVID
+        FROM dubbo_case d,dubbo_module m
+        WHERE d.model = m.id and m.name like #{name}
+    </select>
+
+
+    <!--<findDubboInterfaceList>-->
+    <select id="findDubboInterfaceList" parameterType="com.okay.testcenter.domain.dubbo.DubboCase"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCase">
+
+        SELECT d.ID,d.CASENAME,m.name,d.PARAMS,d.CHECKDATA,d.MODEL,d.INTERFACECLASSNAME,d.METHODNAME,d.REQUESTTYPE,d.TYPE,d.VERSION,d.ENVID
+        FROM dubbo_case d,dubbo_module m
+        WHERE d.model = m.id
+    </select>
+
+
+</mapper>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/report/middleReportList.js}"></script>
+    <script type="text/javascript" th:src="@{/js/report/report.js}"></script>
+</head>
+<body>
+
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div id="reportlist" class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>report</a></li>
+                <li class="breadcrumb-item active"><a>middle</a></li>
+                <li class="breadcrumb-item active"><a>performance</a></li>
+            </ol>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed "   >
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>用例名称</th>
+                    <th>请求总数</th>
+                    <th>吞吐量</th>
+                    <th>平均时间(ms)</th>
+                    <th>最短时间(ms)</th>
+                    <th>最长时间(ms)</th>
+                    <th>错误率</th>
+                    <th >备注</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th style="font-size:16px"><strong>报告</strong></th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr th:each="report: ${pageInfo.list}">
+                    <td th:text="${report.id}"></td>
+                    <td th:text="${report.case_name}"></td>
+                    <td th:text="${report.total_request}"></td>
+                    <td th:text="${report.throughput}"></td>
+                    <td th:text="${report.response_time}"></td>
+                    <td th:text="${report.min_time}"></td>
+                    <td th:text="${report.max_time}"></td>
+                    <td th:text="${report.error_rate}"></td>
+                    <td th:text="${report.error_data}"></td>
+                    <td th:text="${report.start_time}"></td>
+                    <td th:text="${report.end_time}"></td>
+                    <td>
+                        <a th:href="@{'/perf/middle/per/result/detail/' + ${report.case_id}}">查看报告</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav th:id="switchPageModel"
+                 th:replace="html/mainfragment :: switchPageInfo(${pageInfo})">
+            </nav>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+
+</html>

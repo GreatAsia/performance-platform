@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/dubbo/dubbo.js}"></script>
+    <script type="text/javascript" th:src="@{/js/dubbo/dubboCase.js}"></script>
+</head>
+
+<body>
+<nav th:replace="html/mainfragment :: navbar_search('请输入用例名')"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>dubbo</a></li>
+                <li class="breadcrumb-item active"><a>dubbolist</a></li>
+            </ol>
+
+            <div class="row">
+                <!--引入选择环境和模块功能-->
+                <div th:replace="html/mainfragment :: switchInterfaceList(${envList})"></div>
+                <div th:replace="html/mainfragment :: switchModel(${dubboModelList})"></div>
+
+                <div>
+                    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp按模块运行:&nbsp&nbsp
+                        <a href="javascript:void(0)"
+                           class="btn  btn-success"
+                           onclick="runDubboWithModel(this)">开始运行</a>
+                    </label>
+                </div>
+
+            </div>
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>用例名称</th>
+                    <th>环境</th>
+                    <th>所属模块</th>
+                    <th>上行参数</th>
+                    <th>校验数据</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr th:each="dubboInterface: ${pageInfo.list}">
+                    <td th:text="${dubboInterface.id}"></td>
+                    <td th:text="${dubboInterface.caseName}"></td>
+                    <td th:text="${dubboInterface.envId}"></td>
+                    <td th:text="${dubboInterface.name}"></td>
+                    <td th:text="${dubboInterface.params}"></td>
+                    <td th:text="${dubboInterface.checkData}"></td>
+                    <td>
+                        <a href="javascript:void(0)"
+                           th:data-id="${dubboInterface.id}"
+                           class="btn btn-sm btn-success"
+                           onclick="runDubboModal(this)">运行</a>
+
+                        <a href="javascript:void(0)"
+                           th:data-id="${dubboInterface.id}"
+                           th:data-caseName="${dubboInterface.caseName}"
+                           th:data-envId="${dubboInterface.envId}"
+                           th:data-modelId="${dubboInterface.model}"
+                           th:data-interFaceClassName="${dubboInterface.interFaceClassName}"
+                           th:data-methodName="${dubboInterface.methodName}"
+                           th:data-requestType="${dubboInterface.requestType}"
+                           th:data-params="${dubboInterface.params}"
+                           th:data-checkData="${dubboInterface.checkData}"
+                           th:data-type="${dubboInterface.type}"
+                           th:data-version="${dubboInterface.version}"
+                           class="btn  btn-sm btn-info "
+                           onclick="showUpdateModal(this)">修改</a>
+
+                        <a href="javascript:void(0)" th:data-id="${dubboInterface.id}"
+                           class="btn btn-sm btn-danger"
+                           onclick="showDeleteInterface(this)">删除</a>
+
+
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <nav th:id="switchPageModel"
+                 th:replace="html/mainfragment :: switchPageInfo(${pageInfo})">
+            </nav>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+<!--删除用例确认的模态框-->
+<div th:replace="html/mainfragment :: deleteModal">
+</div>
+
+
+<!--运行用例结果的模态框-->
+<div class="modal fade" id="runModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">运行结果</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="float:left;width:100%;">
+                <td>
+                    <input class="form-control" id="result" type="text" placeholder="" readonly="readonly">
+                </td>
+                <textarea style="width:400px;" type="text" rows="10" th:width="10" th:text="运行中..." readonly="readonly"
+                          id="response"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-primary" data-dismiss="modal">关闭</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--按模块运行Dubbo用例的模态框-->
+<div class="modal fade" id="runDubboModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">运行结果</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="float:left;width:100%;">
+                <p id="dubboResult" th:text="运行完成"></p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-primary" data-dismiss="modal">关闭</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--修改用例模态框-->
+<div class="modal fade"    id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog"  style="width:1000px" >
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">修改用例</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">ID:</td>
+                        <td><input  class="form-control" id="updateCaseId" type="text" name="updateCaseId"
+                                   readonly="readonly" >
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">用例名:</td>
+                        <td><input  class="form-control" id="updateCaseName" type="text" name="modelName">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">环境:</td>
+                        <td>
+                            <select style="height:35px;width:400px" class="form-control" id="updateEnv"
+                                    name="updateEnv">
+                                <option>请选择模块</option>
+                                <option th:each="list:${envList}" th:value="${list.id}"
+                                        th:text="${list.name }"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">模块:</td>
+                        <td>
+                            <select style="height:35px;width:400px" class="form-control" id="updateModelName"
+                                    name="updateModelName">
+                                <option>请选择模块</option>
+                                <option th:each="list:${dubboModelList}" th:value="${list.id}"
+                                        th:text="${list.name }"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">接口类名:</td>
+                        <td>
+                            <input  class="form-control" id="updateInterFaceClassName" type="text" name="updateInterFaceClassName">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">方法名:</td>
+                        <td><input  class="form-control" id="updateMethodName" type="text" name="updateMethodName">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">参数类型:</td>
+                        <td><input  class="form-control" id="updateRequestType" type="text" name="updateRequestType">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">用例类型:</td>
+                        <td>
+                            <select class="form-control" id="updateType" type="text" name="updateType"
+                                    style="height: 35px;width:400px">
+                                <option>0</option>
+                                <option>1</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">版本号:</td>
+                        <td>
+                            <input  class="form-control" id="updateVersion" type="text" name="updateVersion">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">验证数据:</td>
+                        <td>
+                            <input  class="form-control" id="updateCheckDate" type="text" name="updateCheckDate">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">请求参数:</td>
+                        <td>
+                            <textarea id="updateParams" class="form-control" type="text" name="updateParams" rows="3"></textarea>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">返回</button>
+                <button type="button" id="updateID" class="btn btn-sm btn-primary" onclick="updateInfo()">提交</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $("input").css("background", "rgba(255,255,255,0.1)");
+    $("input").css("height", "35px");
+    $("input").css("width", "400");
+    $("input").css("overflow", "auto");
+</script>
+
+
+
+</body>
+
+
+</html>

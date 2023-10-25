@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/report/middlelist.js}"></script>
+    <script type="text/javascript" th:src="@{/js/report/report.js}"></script>
+</head>
+<body>
+
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div id="reportlist" class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>report</a></li>
+                <li class="breadcrumb-item active"><a>middle</a></li>
+            </ol>
+            <div class="row">
+                <!--引入选择环境和模块功能-->
+                <div>
+                    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp<font size="4">选择环境</font>&nbsp&nbsp
+                        <select class="form-control" id="selectAddress" type="text" name="selectAddress"
+                                style="height:35px;width:200px" onchange="switchPageInfo()">
+                            <option th:each="list:${envList}" th:value="${list.id}"
+                                    th:text="${list.name }"></option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp<font size="4">选择模块</font>&nbsp&nbsp
+                        <select style="height:35px;width:200px" class="form-control" id="selectModelName"
+                                name="selectModelName"
+                                onchange="switchPageInfo()">
+                            <option th:each="list:${projectList}" th:value="${list.id}"
+                                    th:text="${list.name }">
+                            </option>
+                        </select>
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>运行ID</th>
+                    <th>项目</th>
+                    <th>环境</th>
+                    <th>开始时间</th>
+                    <th>Total</th>
+                    <th>Pass</th>
+                    <th>Fail</th>
+                    <th>结果</th>
+                    <th style="font-size:16px"><strong>报告</strong></th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr th:each="report: ${historyList.list}">
+                    <td th:text="${report.id}"></td>
+                    <td th:text="${report.projectName}"></td>
+                    <td th:text="${report.env}"></td>
+                    <td th:text="${report.startTime}"></td>
+                    <td th:text="${report.totalCase}"></td>
+                    <td th:text="${report.passCase}"></td>
+                    <td th:text="${report.failCase}"></td>
+                    <td style="font-weight:bold" th:class="${report.result eq ('FAIL')} ? 'text-danger' : 'text-success'"
+                        th:text="${report.result}"></td>
+                    <td>
+                        <a th:href="@{'/perf/middle/report/detail/' + ${report.id}}">查看报告</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav th:id="switchPageModel"
+                 th:replace="html/mainfragment :: switchPageInfo(${historyList})">
+            </nav>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+
+</html>

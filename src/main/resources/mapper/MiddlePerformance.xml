@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddlePerformanceMapper">
+
+
+    <!--<insert >-->
+    <insert id="insert" parameterType="com.okay.testcenter.domain.middle.MiddlePerformance">
+      INSERT INTO middle_performance(ID,CASE_ID,THREADS,TIMES,MOREUSER)
+      values (#{id},#{case_id},#{threads},#{times},#{moreUser})
+    </insert>
+
+
+    <!--<update>-->
+    <update id="update" parameterType="com.okay.testcenter.domain.middle.MiddlePerformance">
+        UPDATE middle_performance
+        SET CASE_ID=#{case_id},THREADS=#{threads},TIMES=#{times},MOREUSER=#{moreUser}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<delete>-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM middle_performance
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findByCaseId>-->
+    <select id="findByCaseId" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformance">
+        SELECT p.ID,p.CASE_ID,p.THREADS,p.TIMES,p.moreUser,m.name as case_name
+        FROM middle_performance p,middle_case m
+        WHERE p.case_id=m.id AND p.case_id=#{0}
+    </select>
+
+
+    <!--<findById>-->
+    <select id="findById" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformance">
+        SELECT *
+        from middle_performance
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findList>-->
+    <select id="findList" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformance">
+        SELECT p.ID,p.CASE_ID,p.THREADS,p.TIMES,p.moreUser,m.name as case_name
+        FROM middle_performance p,middle_case m
+        WHERE p.case_id=m.id
+        ORDER BY p.id DESC
+    </select>
+
+
+</mapper>

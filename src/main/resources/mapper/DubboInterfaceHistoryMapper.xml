@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.dubbo.DubboInterfaceHistoryMapper">
+
+
+    <!--<insertHistory >-->
+    <insert id="insertHistory" parameterType="com.okay.testcenter.domain.dubbo.DubboCaseHistory">
+      INSERT INTO dubbo_casehistory(ID,HISTORYID,MODELID,CASENAME,REQUESTDATA,ENV,STARTTIME,ENDTIME,RESPONSECONTENT,RESULT)
+      values (#{id},#{historyId},#{modelId},#{caseName},#{requestData},#{env},#{startTime},#{endTime},#{responseContent},#{result})
+    </insert>
+
+
+    <!--<updateHistory>-->
+    <update id="updateHistory" parameterType="com.okay.testcenter.domain.dubbo.DubboCaseHistory">
+        UPDATE dubbo_casehistory
+        SET HISTORYID=#{historyId},MODELID=#{modelId},CASENAME=#{caseName},REQUESTDATA=#{requestData},ENV=#{env},STARTTIME=#{startTime},ENDTIME=#{endTime},RESPONSECONTENT=#{responseContent},RESULT=#{result}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteHistory>-->
+    <delete id="deleteHistory" parameterType="int">
+        DELETE FROM dubbo_casehistory
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findHistoryById>-->
+    <select id="findHistoryById" parameterType="int" resultType="com.okay.testcenter.domain.dubbo.DubboCaseHistory">
+        SELECT d.HISTORYID,m.name,d.CASENAME,d.ENV,d.STARTTIME,d.RESULT
+        FROM dubbo_casehistory d,dubbo_module m
+        WHERE d.modelId = m.id and d.id=#{0}
+    </select>
+
+    <!--<findHistoryByModel>-->
+    <select id="findHistoryByModel" parameterType="int" resultType="com.okay.testcenter.domain.dubbo.DubboCaseHistory">
+        SELECT d.HISTORYID,m.name,d.CASENAME,d.ENV,d.STARTTIME,d.RESULT
+        FROM dubbo_casehistory d,dubbo_module m
+        WHERE d.modelId = m.id and d.modelId=#{arg0}
+    </select>
+
+
+    <!--<findHistoryList>-->
+    <select id="findHistoryList" parameterType="com.okay.testcenter.domain.dubbo.DubboCaseHistory"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCaseHistory">
+
+        SELECT d.HISTORYID,m.name,d.CASENAME,d.ENV,d.STARTTIME,d.RESULT
+        FROM dubbo_casehistory d,dubbo_module m
+        WHERE d.modelId = m.id
+    </select>
+
+    <!--<findHistoryByHistoryId>-->
+    <select id="findHistoryByHistoryId" parameterType="int"
+            resultType="com.okay.testcenter.domain.dubbo.DubboCaseHistory">
+        SELECT *
+        FROM dubbo_casehistory
+        WHERE HISTORYID=#{id}
+        ORDER BY result
+    </select>
+
+
+</mapper>

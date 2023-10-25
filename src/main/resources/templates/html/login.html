@@ -1,0 +1,88 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <link rel="stylesheet" th:href="@{/css/fluidbox.min.css}">
+    <link rel="stylesheet" th:href="@{/css/github.css}">
+    <link rel="stylesheet" th:href="@{/css/style-v0.3.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,300,100" type="text/css">
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    <script type="text/javascript" th:src="@{/js/html/user.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/clipboard.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/highlight.pack.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/jquery.fluidbox.min.js}"></script>
+
+    <style th:inline="text">
+        body{
+            background: url("[[@{/}]]image/car1366.jpg") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+
+<body >
+
+
+<canvas class="my-4" id="myChart" width="900" height="20"></canvas>
+
+<div class="page-wrap">
+    <div class="container">
+        <div class="page-content">
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="step step-login content col-xs-8 offset-xs-2 col-sm-6 offset-sm-3 col-md-4 offset-md-4 col-lg-4 offset-lg-4">
+                        <div class="panel panel-default panel-login">
+                            <div class="panel-heading text-center">
+                                <h3 class="panel-title text-success">
+                                    <strong >OK-QA压测平台</strong>
+                                </h3>
+                                <br>
+                                <br>
+                                <h3 class="panel-title text-success">
+                                    <strong>Sign In</strong>
+                                </h3>
+                                <hr class="small">
+                            </div>
+                            <div class="panel-body">
+                                <form action="/login" method="post" onsubmit="return false">
+                                    <div id="loginform" role="form">
+                                        <div class="form-group">
+                                            <input type="text" id="username" class="form-control"
+                                                   placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" id="password" class="form-control"
+                                                   placeholder="Password">
+                                        </div>
+                                        <div id="msg" class="message micro-text" style="display: none;"></div>
+                                        <button id="loginBtn" onclick="loginPlatform()"
+                                                class="btn btn-lg btn-primary btn-action"
+                                                style="width: 100%;">Continue
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<canvas class="my-4" id="meChart" width="900" height="80"></canvas>
+<footer th:replace="html/mainfragment :: footer"></footer>
+
+</body>
+
+
+</html>

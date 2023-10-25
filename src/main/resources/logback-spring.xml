@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+
+
+    <!--日志输出路径-->
+    <springProperty scope="context" name="LOG_HOME" source="logging.path"/>
+
+    <!--控制台日志输出配置-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <!--对输出日志进行格式化-->
+        <encoder>
+            <!--<pattern>%d %p (%file:%line\)- %m%n</pattern>-->
+            <!--格式化输出：%d:表示日期    %thread:表示线程名     %-5level:级别从左显示5个字符宽度  %msg:日志消息    %n:是换行符-->
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger) - %cyan(%msg%n)</pattern>
+            <!--字符编码-->
+            <charset>UTF-8</charset><!--此处设置字符集-->
+        </encoder>
+    </appender>
+
+
+
+
+    <!--日志文件配置info-->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--如果只是想要 Info 级别的日志，只是过滤 info 还是会输出 Error 日志，因为 Error 的级别高，
+        所以我们使用下面的策略，可以避免输出 Error 的日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--过滤 Error-->
+            <level>ERROR</level>
+            <!--匹配到就禁止-->
+            <onMatch>DENY</onMatch>
+            <!--没有匹配到就允许-->
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
+            <FileNamePattern>${LOG_HOME}/server-info.%d.log</FileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+
+        <!--日志输出编码格式化-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!--日志文件配置error-->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--设置日志级别,过滤掉info日志,只输入error日志-->
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${LOG_HOME}/server-error.%d.log</fileNamePattern>
+            <!--日志文件保留天数-->
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+
+        <!--日志输出编码格式化-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+
+
+
+
+    <root level="INFO">
+        <appender-ref ref="consoleLog"/>
+        <appender-ref ref="fileErrorLog"/>
+        <appender-ref ref="fileInfoLog"/>
+    </root>
+
+</configuration>

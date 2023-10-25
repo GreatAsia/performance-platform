@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.user.GroupMapper">
+    <resultMap id="BaseResultMap" type="com.okay.testcenter.domain.bean.Group">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
+        <result column="is_delete" jdbcType="CHAR" property="isDelete"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+
+
+    <resultMap id="BaseGroupSimpleDetail" type="com.okay.testcenter.domain.user.GroupSimpleDetailResponse">
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="menu_id" jdbcType="BIGINT" property="menuId"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, role_id, menu_id, is_delete, create_by, create_at, update_by, update_at
+  </sql>
+
+    <sql id="Base_Group_Simple_Detail">
+        xy_group.menu_id,xy_role.role_code,xy_group.role_id,xy_menu.menu_url
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_group
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectGroupSimpleDetailByGroup" parameterType="com.okay.testcenter.domain.user.GroupSimpleDetailResponse"
+            resultMap="BaseGroupSimpleDetail">
+        select
+        <include refid="Base_Group_Simple_Detail"/>
+        from xy_group
+        LEFT JOIN xy_role ON xy_group.role_id= xy_role.id
+        LEFT JOIN xy_menu ON xy_group.menu_id = xy_menu.id
+        where 1=1
+        <if test="id != null">
+            and xy_group.id=#{id,jdbcType=INTEGER}
+        </if>
+        <if test="roleId != null">
+            and xy_group.role_id=#{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="menuId != null">
+            and xy_group.menu_id=#{menuId,jdbcType=BIGINT}
+        </if>
+        and xy_group.is_delete = 0
+        and xy_role.is_delete = 0
+        and xy_menu.is_delete = 0
+    </select>
+
+
+    <select id="selectByGroup" parameterType="com.okay.testcenter.domain.bean.Group" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_group
+        where 1=1
+        <if test="id != null">
+            and id=#{id,jdbcType=INTEGER}
+        </if>
+        <if test="roleId != null">
+            and role_id=#{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="menuId != null">
+            and menu_id=#{menuId,jdbcType=BIGINT}
+        </if>
+        <if test="isDelete != null">
+            and is_delete = #{isDelete,jdbcType=CHAR},
+        </if>
+        <if test="createBy != null">
+            and create_by = #{createBy,jdbcType=VARCHAR},
+        </if>
+        <if test="createAt != null">
+            and create_at = #{createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateBy != null">
+            and update_by = #{updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="updateAt != null">
+            and update_at = #{updateAt,jdbcType=TIMESTAMP},
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xy_group
+    where 1=1
+    if
+  </delete>
+    <insert id="insert" parameterType="com.okay.testcenter.domain.bean.Group">
+    insert into xy_group (id, role_id, menu_id, 
+      is_delete, create_by, create_at, 
+      update_by, update_at)
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{menuId,jdbcType=BIGINT}, 
+      #{isDelete,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.okay.testcenter.domain.bean.Group">
+        insert into xy_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="menuId != null">
+                menu_id,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createAt != null">
+                create_at,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateAt != null">
+                update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="menuId != null">
+                #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.okay.testcenter.domain.bean.Group">
+        update xy_group
+        <set>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="menuId != null">
+                menu_id = #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id=#{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.okay.testcenter.domain.bean.Group">
+    update xy_group
+    set role_id = #{roleId,jdbcType=INTEGER},
+      menu_id = #{menuId,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+    <insert id="updateOrInsertGroup" parameterType="java.util.List">
+        insert into xy_group(id, role_id, menu_id,
+        is_delete, create_by,
+        update_by, update_at)
+        values
+        <foreach collection="groups" item="item" index="index" separator=",">
+            ( #{item.id,jdbcType=INTEGER},#{item.roleId,jdbcType=INTEGER}, #{item.menuId,jdbcType=BIGINT},
+            #{item.isDelete,jdbcType=CHAR}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.updateBy,jdbcType=VARCHAR}, #{item.updateAt,jdbcType=TIMESTAMP})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        is_delete=VALUES(is_delete)
+    </insert>
+
+
+    <update id="deleteByRoleId" parameterType="com.okay.testcenter.domain.bean.Group">
+        update xy_group
+        <set>
+            is_delete = 1, update_by = #{updateBy,jdbcType=VARCHAR},update_at = #{updateAt,jdbcType=TIMESTAMP}
+        </set>
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </update>
+</mapper>

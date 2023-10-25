@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/data/data.js}"></script>
+    <script type="text/javascript" th:src="@{/js/data/detail.js}"></script>
+</head>
+<body>
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>data</a></li>
+                <li class="breadcrumb-item active"><a>list</a></li>
+            </ol>
+
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>账号</th>
+                    <th>密码</th>
+                    <th>TOKEN</th>
+                    <th>COOKIES</th>
+                    <th>更新时间</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr id="middleList" th:each="detail: ${userDetails}">
+                    <td th:text="${detail.historyId}"></td>
+                    <td th:text="${detail.account}"></td>
+                    <td th:text="${detail.pwd}"></td>
+                    <td th:text="${detail.token}"></td>
+                    <td th:text="${detail.cookies}"></td>
+                    <td th:text="${detail.updateTime}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+</body>
+
+
+</html>

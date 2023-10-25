@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" th:href="@{/image/favicon-32x32.png}" sizes="32x32">
+    <link rel="icon" type="image/png" th:href="@{/image/favicon-16x16.png}" sizes="16x16">
+    <title>QA压测平台</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/yahei.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/buttons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-table.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" th:src="@{/js/html/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/popper.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/bootstrap.min.js}"></script>
+    <!-- Icons -->
+    <script type="text/javascript" th:src="@{/js/html/feather.min.js}"></script>
+    <!-- Graphs -->
+    <script type="text/javascript" th:src="@{/js/html/Chart.min.js}"></script>
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript" th:src="@{/js/html/echarts.js}"></script>
+    <!-- 引入 bootstrap-table -->
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-table-zh-CN.min.js}"></script>
+    <!-- 引入 bootstrap-select -->
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-select.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/defaults-zh_CN.min.js}"></script>
+    <!--引入 bootstrap-paginator-->
+    <script type="text/javascript" th:src="@{/js/html/bootstrap-paginator.min.js}"></script>
+    <!--引入 查看日志-->
+    <!--<script type="text/javascript" th:src="@{/js/log/showLog.js}"></script>-->
+    <!--引入 webSocket-->
+    <script type="text/javascript" th:src="@{/js/html/sockjs.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/html/stomp.min.js}"></script>
+</head>
+<body>
+<!--上面的搜索-->
+<div th:fragment="navbar_search(name)"
+     class="navbar navbar-dark sticky-top bg-info flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">OKAY-QA压测平台</a>
+    <div class="th-inner" style="float:left">
+        <input class="form-control navbar-brand col-sm-3 col-md-2 mr-0" th:class="bg-light" type="text"
+               id="searchName" th:placeholder="${name}">
+        &nbsp&nbsp
+        <button class="btn btn-primary btn-sm" id="search" onclick="search()">搜索</button>
+    </div>
+    <div class="btn btn-group-lg col-sm-4 col-md-3 ">
+
+        <a href="/logout" class="btn-lg btn-info" id="logouts">&nbsp&nbsp退出&nbsp&nbsp</a>
+    </div>
+</div>
+
+
+<nav th:fragment="navbar" class="navbar navbar-dark sticky-top bg-info flex-md-nowrap p-0">
+    <div class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
+        <a>OKAY-QA压测平台</a>
+    </div>
+    <div class="btn btn-group-lg col-sm-4 col-md-3 ">
+
+        <a href="/logout" class="btn-lg btn-info" id="logout">&nbsp&nbsp退出&nbsp&nbsp</a>
+    </div>
+
+
+</nav>
+
+<!--页脚-友情链接-->
+<div th:fragment="footer" id="footer" class="page-footer">
+    <hr>
+    <div id="comments"></div>
+    <div id="links" align="center">
+        <h6 class="text-success">友情链接</h6>
+        <a class="footer_links" target="_blank" href="http://bug.okjiaoyu.cn/index.php?"
+           role="button">禅道</a>,
+        <a class="footer_links" target="_blank" href="http://jenkins-hotfix.xk12.cn" role="button">Jenkins</a>,
+        <a class="footer_links" target="_blank" href="http://okay-qaplatform.xk12.cn">测试平台</a>,
+        <a class="footer_links" target="_blank" href="http://git.okjiaoyu.cn" role="button">GitLab</a>,
+        <a class="footer_links" target="_blank"
+           href="http://wiki.okjiaoyu.cn/pages/viewpage.action?pageId=15864530" role="button">WIKI</a>
+    </div>
+</div>
+
+<!--左侧导航栏-->
+<nav th:fragment="letf_nav" class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div id="accordion" class="sidebar-sticky">
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseOne">
+                <a class="card-link">
+                    <span data-feather="home"></span>
+                    <strong>项目概况</strong>
+                </a>
+            </div>
+            <div id="collapseOne" class="collapse " data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link">
+                        <a href="/api/home">压测规范</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseFour">
+                <a class="collapsed card-link">
+                    <span data-feather="users"></span>
+                    <strong>中间层压测</strong>
+                </a>
+            </div>
+            <div id="collapseFour" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link"><a
+                            href="/perf/middle/case/list">用例管理</a>
+                    </div>
+
+                    <div class="nav nav-link"><a
+                            href="/perf/middle/per/list">计划管理</a>
+                    </div>
+                    <div class="nav nav-link"><a
+                            href="/perf/middle/per/set/list">计划集管理</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseFive">
+                <a class="collapsed card-link">
+                    <span data-feather="bar-chart-2"></span>
+                    <strong>后端压测</strong>
+                </a>
+            </div>
+            <div id="collapseFive" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link"><a href="/perf/dubbo/test">接口调试</a></div>
+                    <div class="nav nav-link"><a href="/perf/dubbo/module">模块配置</a></div>
+                    <div class="nav nav-link"><a
+                            href="/perf/dubbo/list">用例管理</a>
+                    </div>
+                    <div class="nav nav-link"><a
+                            href="/perf/dubbo/per/list">计划管理</a>
+                    </div>
+                    <div class="nav nav-link"><a
+                            href="/perf/dubbo/per/set/list">计划集管理</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseSix">
+                <a class="collapsed card-link">
+                    <span data-feather="file"></span>
+                    <strong>测试报告</strong>
+                </a>
+            </div>
+            <div id="collapseSix" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link"><a href="/perf/middle/per/result/list">中间层单条压测</a></div>
+                    <div class="nav nav-link"><a href="/perf/middle/per/result/runId/list">中间层压测集合</a></div>
+
+                    <div class="nav nav-link"><a href="/perf/dubbo/report/list">后端</a></div>
+                    <div class="nav nav-link"><a href="/perf/dubbo/per/result/list">Dubbo单条压测</a></div>
+                    <div class="nav nav-link"><a href="/perf/dubbo/per/result/runId/list">Dubbo压测集合</a></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseSeven">
+                <a class="collapsed card-link">
+                    <span data-feather="layers"></span>
+                    <strong>定时任务</strong>
+                </a>
+            </div>
+            <div id="collapseSeven" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link">
+                        <a href="/perf/job/list">任务列表</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseEight">
+                <a class="collapsed card-link">
+                    <span data-feather="layers"></span>
+                    <strong>压测数据</strong>
+                </a>
+            </div>
+            <div id="collapseEight" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link">
+                        <a href="/perf/middle/account/history/list">创建账号</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" href="#collapseNine">
+                <a class="collapsed card-link">
+                    <span data-feather="layers"></span>
+                    <strong>压测节点</strong>
+                </a>
+            </div>
+            <div id="collapseNine" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="nav nav-link">
+                        <a href="/perf/slave/list">节点列表</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!--切换页面-->
+<nav th:fragment="switchPage(beforUrl,pageInfo)" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        <li class="page-item"><a class="page-link"
+                                 th:href="@{${beforUrl}+ ${pageInfo.navigateFirstPage}+ '&pageSize=10'}">首页</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 th:href="@{${beforUrl}+ ${pageInfo.nextPage}+ '&pageSize=10'}">下一页</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 th:href="@{${beforUrl} + ${pageInfo.prePage}+ '&pageSize=10'}">上一页</a>
+        </li>
+        <li class="page-item"><a class="page-link"
+                                 th:href="@{${beforUrl}+ ${pageInfo.navigateLastPage}+ '&pageSize=10'}">末页</a>
+        </li>
+        <li class="page-item"><a class="page-link" th:text="第+(${pageInfo.prePage}+1)+ 页"></a>
+        </li>
+        <li class="page-item"><a class="page-link" th:text="共+${pageInfo.pages}+ 页"></a>
+        </li>
+
+    </ul>
+</nav>
+
+
+<!--切换页面不刷新-->
+<nav th:fragment="switchPageInfo(pageInfo)" id="switchPage" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        <li class="page-item"><a class="page-link" id="homePage" onclick="homePage()">首页</a>
+        </li>
+        <li class="page-item"><a class="page-link" id="nextPage" onclick="nextPage()">下一页</a>
+        </li>
+        <li class="page-item"><a class="page-link" id="previousPage" onclick="previousPage()">上一页</a>
+        </li>
+        <li class="page-item"><a class="page-link" id="lastPage" onclick="lastPage()">末页</a>
+        </li>
+        <li class="page-item"><a class="page-link" id="currentPage" th:text="第1页"></a>
+        </li>
+        <li class="page-item"><a class="page-link" id="totalPage" th:text="共+${pageInfo.pages}+ 页"> </a>
+        </li>
+
+    </ul>
+</nav>
+
+
+<!--删除模块确认的模态框-->
+<div th:fragment="deleteModal" class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">提示</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <input  class="form-control" type="hidden" id="deleteID"/>
+                <p>您确认要删除该条信息吗？</p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-primary" data-dismiss="modal">返回</a>
+                <a type="button" id="deleteBtn" class="btn btn-sm btn-danger" onclick="deleteInfo()">确认</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--添加模块模态框（Modal）-->
+<div th:fragment="addModal" class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myModalLabel">
+                    添加Dubbo模块
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">模块名:</td>
+                        <td><input  class="form-control" id="addModelName" type="text" name="modelName"
+                                   style="height:35px;width:300px"
+                                   placeholder=""></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">备注:</td>
+                        <td><input  class="form-control" id="addModelComments" type="text" name="modelComments"
+                                   style="height:35px;width:300px"
+                                   placeholder="">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">返回</button>
+                <button type="button" id="addModelID" class="btn btn-sm btn-primary" onclick="addDubboModel()">提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!--修改模块模态框-->
+<div th:fragment="updateModal" class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">修改模块</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">模块名:</td>
+                        <td><input  class="form-control" id="updateModelName" type="text" name="modelName"
+                                   style="height:35px;width:300px"
+                                   placeholder=""></td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">备注:</td>
+                        <td><input  class="form-control" id="updateModelComments" type="text" name="modelComments"
+                                   style="height:35px;width:300px"
+                                   placeholder="">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">返回</button>
+                <button type="button" id="updateID" class="btn btn-sm btn-primary" onclick="updateDubboModel()">提交
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--选择环境-->
+<div th:fragment="switchEnv(envList)">
+    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp<font size="4"></font>
+        <select class="form-control" id="selectAddress" type="text" name="selectAddress"
+                style="height:35px;width:200px">
+            <option th:each="list:${envList}" th:value="${list.id}"
+                    th:text="${list.name }"></option>
+        </select>
+    </label>
+</div>
+
+<!--选择模块-->
+<div th:fragment="switchModel(paramList)">
+
+    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp<font size="4"></font>
+        <select style="height:35px;width:200px" class="form-control" id="selectModelName"
+                onchange="switchPageInfo()">
+            <option th:each="list:${paramList}" th:value="${list.id}"
+                    th:text="${list.name }">
+            </option>
+        </select>
+    </label>
+</div>
+
+<!--选择模块-->
+<div th:fragment="switchModelMiddle(paramList)">
+
+    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp<font size="4"></font>
+        <select style="height:35px;width:200px" class="form-control" id="middleModel"
+                onchange="switchMiddleModule()">
+            <option th:each="list:${paramList}" th:value="${list.id}"
+                    th:text="${list.name }">
+            </option>
+        </select>
+    </label>
+</div>
+
+
+<!--中间层选择项目-->
+<div th:fragment="switchProject(paramList)">
+
+    <label class="form-inline">&nbsp&nbsp&nbsp&nbsp<font size="4"></font>
+        <select style="height:35px;width:240px" class="form-control" id="selectProjectName"
+                onchange="switchPageInfo()">
+            <option th:each="list:${paramList}" th:value="${list.id}"
+                    th:text="${list.name }">
+            </option>
+        </select>
+    </label>
+</div>
+
+
+
+
+<!--中间层用例-->
+<div th:fragment="switchProjectCase(paramList)">
+
+    <label class="form-inline">&nbsp&nbsp<font size="4"></font>
+        <select style="height:35px;width:240px" title="请选择项目" class="form-control" id="projectCaseName"
+                onchange="switchListProject()">
+            <option th:each="list:${paramList}" th:value="${list.id}"
+                    th:text="${list.name }">
+            </option>
+        </select>
+    </label>
+</div>
+
+
+<div th:fragment="switchModuleCase(paramList)">
+    <label class="form-inline">&nbsp&nbsp<font size="4"></font>
+        <select style="height:35px;width:120px" title="请选择模块" class="form-control" id="moduleCaseName"
+                onchange="switchListModule()">
+            <option th:each="list:${paramList}" th:value="${list.id}"
+                    th:text="${list.name }">
+        </select>
+    </label>
+</div>
+
+
+<div th:fragment="switchInterfaceList(paramList)">
+
+    <label class="form-inline">&nbsp&nbsp<font size="4"></font>
+        <select style="height:35px;width:200px" title="请选择接口" class="form-control" id="interfaceCaseName"
+                onchange="switchListEnvAndInterface()">
+            <option th:each="list:${paramList}" th:value="${list.id}"
+                    th:text="${list.name }">
+        </select>
+    </label>
+</div>
+
+
+</body>
+
+
+</html>

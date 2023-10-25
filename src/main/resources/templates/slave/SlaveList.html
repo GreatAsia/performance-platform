@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/slave/slave.js}"></script>
+    <script type="text/javascript" th:src="@{/js/slave/slaveList.js}"></script>
+</head>
+<body>
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>slave</a></li>
+                <li class="breadcrumb-item active"><a>list</a></li>
+            </ol>
+            <div class="row" align="center">
+                <!-- 按钮触发模态框 -->
+                &nbsp&nbsp&nbsp&nbsp
+                <a href="javascript:void(0)" class="btn btn-primary "
+                   onclick="showAddModal(this)">添加节点</a>
+                <!--&nbsp&nbsp&nbsp&nbsp-->
+                <!--<button type="button" class="btn btn-sm btn-info" onclick="checkAll()">全选</button>-->
+                <!--&nbsp&nbsp&nbsp&nbsp-->
+                <!--<button type="button" class="btn  btn-sm btn-info" onclick="checkNo()">取消全选</button>-->
+                <!--&nbsp&nbsp&nbsp&nbsp-->
+                <!--<button type="button" class="btn  btn-sm btn-info" onclick="runAppMoreCase()">运行多条</button>-->
+            </div>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>IP</th>
+                    <th>Jmeter端口</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="slave: ${slaveEntityList}">
+
+                    <td th:text="${slave.slaveId}"></td>
+                    <td th:text="${slave.slaveName}"></td>
+                    <td th:text="${slave.ip}"></td>
+                    <td th:text="${slave.jmeterPort}"></td>
+                    <td th:text="${slave.status}"></td>
+                    <td>
+                        <a href="javascript:void(0)"
+                           th:data-id="${slave.slaveId}"
+                           th:data-name="${slave.slaveName}"
+                           th:data-ip="${slave.ip}"
+                           th:data-jmeterPort="${slave.jmeterPort}"
+                           th:data-status="${slave.status}"
+                           class="btn  btn-sm btn-info "
+                           onclick="showUpdateModal(this)">修改</a>
+
+                        <a href="javascript:void(0)" th:data-id="${slave.slaveId}" class="btn btn-sm btn-danger"
+                           onclick="showDeleteModal(this)">删除</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--添加模块的模态框-->
+<div th:replace="html/mainfragment :: addModal">
+</div>
+
+<!--删除模块确认的模态框-->
+<div th:replace="html/mainfragment :: deleteModal">
+</div>
+
+<!--修改模块模态框-->
+<div th:replace="html/mainfragment :: updateModal">
+</div>
+
+
+</body>
+
+
+</html>

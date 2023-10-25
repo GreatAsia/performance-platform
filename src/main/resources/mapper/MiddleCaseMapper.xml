@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleCaseMapper">
+
+
+    <!--<insertMiddleCase >-->
+    <insert id="insertMiddleCase" parameterType="com.okay.testcenter.domain.middle.MiddleCase">
+      INSERT INTO middle_case(ID,ENV_ID,INTERFACE_ID,CASETYPE,NAME,REQUEST_DATA,CHECK_DATA)
+      values (#{id},#{env_id},#{interface_id},#{caseType},#{name},#{request_data},#{check_data})
+    </insert>
+
+
+    <!--<updateMiddleCase>-->
+    <update id="updateMiddleCase" parameterType="com.okay.testcenter.domain.middle.MiddleCase">
+        UPDATE middle_case
+        SET ENV_ID=#{env_id},INTERFACE_ID=#{interface_id},CASETYPE=#{caseType},NAME=#{name},REQUEST_DATA=#{request_data},CHECK_DATA=#{check_data}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteMiddleCase>-->
+    <delete id="deleteMiddleCase" parameterType="int">
+        DELETE FROM middle_case
+        WHERE ID=#{0}
+    </delete>
+
+    <!--<findMiddleCaseById>-->
+    <select id="findMiddleCaseById" parameterType="int" resultType="com.okay.testcenter.domain.middle.MiddleCase">
+        SELECT *
+        from middle_case
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findMiddleCaseByName>-->
+    <select id="findMiddleCaseByName" parameterType="string" resultType="com.okay.testcenter.domain.middle.MiddleCase">
+
+        SELECT c.id,c.env_id,c.interface_id,i.name AS interfaceName,c.name,c.request_data,c.check_data,m.id AS module_id ,p.id AS project_id
+        FROM middle_case c,middle_interface i,middle_module m,middle_project p
+        WHERE c.interface_id=i.id  AND i.module_id=m.id AND m.project_id=p.id AND c.name LIKE  CONCAT('%',#{0},'%')
+
+    </select>
+
+
+    <!--<findMiddleCaseByPath>-->
+    <select id="findMiddleCaseByPath" parameterType="string" resultType="com.okay.testcenter.domain.middle.MiddleCase">
+
+        SELECT c.id,c.env_id,c.interface_id,i.name AS interfaceName,c.name,c.request_data,c.check_data,m.id AS module_id ,p.id AS project_id
+        FROM middle_case c,middle_interface i,middle_module m,middle_project p
+        WHERE c.interface_id=i.id  AND i.module_id=m.id AND m.project_id=p.id AND i.url LIKE  CONCAT('%',#{0},'%')
+
+    </select>
+
+    <!--<findMiddleCaseList>-->
+    <select id="findMiddleCaseList" parameterType="com.okay.testcenter.domain.middle.MiddleCase"
+            resultType="com.okay.testcenter.domain.middle.MiddleCase">
+        SELECT *
+        from middle_case
+    </select>
+
+
+    <!--<findMiddleCaseByEnvAndInterface>-->
+    <select id="findMiddleCaseByEnvAndInterface" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddleCase">
+        SELECT c.id,c.env_id,c.interface_id,i.name AS interfaceName,c.name,c.request_data,c.check_data,m.id AS module_id ,p.id AS project_id
+        FROM middle_case c,middle_interface i,middle_module m,middle_project p
+        WHERE c.interface_id=i.id  AND i.module_id=m.id AND m.project_id=p.id AND c.env_id=#{param1} and c.interface_id=#{param2}
+
+    </select>
+
+
+</mapper>

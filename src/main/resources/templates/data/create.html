@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/data/data.js}"></script>
+    <script type="text/javascript" th:src="@{/js/data/create.js}"></script>
+</head>
+<body>
+
+<nav th:replace="html/mainfragment :: navbar"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>data</a></li>
+                <li class="breadcrumb-item active"><a>create</a></li>
+            </ol>
+
+
+            <!-- 按钮触发模态框 -->
+            <a href="javascript:void(0)" class="btn  btn-primary "
+               onclick="showAddAccount(this)">添加账号</a>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>账号类型</th>
+                    <th>账号数量</th>
+                    <th>环境</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr id="middleList" th:each="history: ${addUserHistoryList}">
+                    <td th:text="${history.id}"></td>
+                    <td th:text="${history.userType}"></td>
+                    <td th:text="${history.totalCount}"></td>
+                    <td th:text="${history.envName}"></td>
+                    <td>
+                        <a href="javascript:void(0)"
+                           th:data-id="${history.id}"
+                           th:data-userType="${history.userType}"
+                           th:data-totalCount="${history.totalCount}"
+                           th:data-envId="${history.envId}"
+                           class="btn btn-sm btn-success"
+                           onclick="runGenerateModal(this)">生成数据</a>
+                        <a href="javascript:void(0)"
+                           th:data-id="${history.id}"
+                           class="btn btn-sm btn-success"
+                           onclick="updateDataModal(this)">更新数据</a>
+                        <a th:href="@{'/perf/middle/account/history/'+ ${history.id}}"
+                           class="btn btn-sm btn-info">查看数据</a>
+                        <a th:href="@{'/perf/middle/account/history/download/'+ ${history.id}}"
+                           class="btn btn-sm btn-primary">下载数据</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--添加模态框（Modal）-->
+<div th:fragment="addModal" class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myModalLabel">
+                    添加账号数据
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr class="th-inner">
+                        <td class="text-right">账号类型:</td>
+                        <td>
+                            <select style="height:35px;width:300px" class="form-control " id="userType">
+                                <option value="0">学生</option>
+                                <option value="1">老师</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">账号数量:</td>
+                        <td><input class="form-control" id="total" type="text"
+                                   style="height:35px;width:300px"
+                                   placeholder="">
+                        </td>
+                    </tr>
+                    <tr class="th-inner">
+                        <td class="text-right">环境:</td>
+                        <td>
+                            <select style="height:35px;width:300px" class="form-control " id="envId">
+                                <option th:each="list:${envList}" th:value="${list.id}"
+                                        th:text="${list.name }"></option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">返回</button>
+                <button type="button" id="addModelID" class="btn btn-sm btn-primary" onclick="addData()">提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!--运行用例结果的模态框-->
+<div class="modal fade" id="runCase" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">运行结果</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result">
+
+            </div>
+            <div class="modal-body" style="float:left;width:100%;">
+                <textarea style="width:100%;" type="text" rows="20" th:width="20" th:text="请等待..." readonly="readonly"
+                          id="respose"></textarea>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-primary" data-dismiss="modal">关闭</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--运行用例结果的模态框-->
+<div class="modal fade" id="updata" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">运行结果</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="updataResult">
+
+            </div>
+            <div class="modal-body" style="float:left;width:100%;">
+                <textarea style="width:100%;" type="text" rows="20" th:width="20" th:text="请等待..." readonly="readonly"
+                          id="updataRespose"></textarea>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-sm btn-primary" data-dismiss="modal">关闭</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+</html>

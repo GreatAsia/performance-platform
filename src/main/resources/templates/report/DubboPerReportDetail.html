@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/report/report.js}"></script>
+    <script type="text/javascript" th:src="@{/js/report/sendEmail.js}"></script>
+</head>
+<body>
+
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+            <div id="errorRate" style="width: 1100px;height:200px;"></div>
+            <hr>
+            <div id="responseTime" style="width: 1100px;height:200px;"></div>
+            <hr>
+            <div id="throughtPut" style="width: 1100px;height:200px;"></div>
+        </main>
+    </div>
+
+
+</div>
+
+
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('errorRate'));
+    var data = [[${errorRateReport}]];
+    myChart.setOption({
+        title: {
+            text: data.caseName + "-错误率",
+            subtext: '单位-%'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+
+        xAxis: {
+            type: 'category',
+            data: data.runTime,
+            axisLabel: {
+                interval: 0,
+                rotate: 90
+            },
+        },
+
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: data.errorRate,
+            type: 'line',
+
+        }]
+
+    });
+
+
+</script>
+
+
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('responseTime'));
+    var data = [[${responseTimeReport}]];
+    myChart.setOption({
+        title: {
+            text: data.caseName + "-平均响应时间",
+            subtext: '单位-ms'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+
+        xAxis: {
+            type: 'category',
+            data: data.runTime,
+            axisLabel: {
+                interval: 0,
+                rotate: 90
+            },
+        },
+
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: data.responseTime,
+            type: 'line',
+
+        }]
+
+    });
+
+
+</script>
+
+
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('throughtPut'));
+    var data = [[${throughPutReport}]];
+    myChart.setOption({
+        title: {
+            text: data.caseName + "-吞吐量",
+            subtext: '单位-s'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+
+        xAxis: {
+            type: 'category',
+            data: data.runTime,
+            axisLabel: {
+                interval: 0,
+                rotate: 90
+            },
+        },
+
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: data.throughPut,
+            type: 'line',
+
+        }]
+
+    });
+
+
+</script>
+
+</body>
+
+
+</html>

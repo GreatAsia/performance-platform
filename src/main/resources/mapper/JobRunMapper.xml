@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.job.JobRunMapper">
+
+
+    <!--<insertJob >-->
+    <insert id="insertJob" parameterType="com.okay.testcenter.domain.Job">
+      INSERT INTO job(ID,JOBNAME,JOBGROUP,CRON,STATUS)
+      values (#{id},#{jobName},#{jobGroup},#{cron},#{status})
+    </insert>
+
+
+    <!--<updateJob>-->
+    <update id="updateJob" parameterType="com.okay.testcenter.domain.Job">
+        UPDATE job
+        SET JOBNAME=#{jobName},JOBGROUP=#{jobGroup},CRON=#{cron},STATUS=#{status}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteJob>-->
+    <delete id="deleteJob" parameterType="int">
+        DELETE FROM job
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findJobById>-->
+    <select id="findJobById" parameterType="int" resultType="com.okay.testcenter.domain.Job">
+        SELECT ID,JOBNAME,JOBGROUP,CRON,STATUS
+        from job
+        WHERE ID=#{0}
+    </select>
+
+    <!--<findJobByName>-->
+    <select id="findJobByName" parameterType="string" resultType="com.okay.testcenter.domain.Job">
+        SELECT ID,JOBNAME,JOBGROUP,CRON,STATUS
+        from job
+        WHERE JOBNAME LIKE CONCAT('%',#{0},'%')
+    </select>
+
+
+    <!--<findJobList>-->
+    <select id="findJobList" parameterType="com.okay.testcenter.domain.Job"
+            resultType="com.okay.testcenter.domain.Job">
+        SELECT ID,JOBNAME,JOBGROUP,CRON,STATUS
+        FROM job
+        ORDER BY ID DESC
+    </select>
+
+
+</mapper>

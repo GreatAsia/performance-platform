@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.user.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.okay.testcenter.domain.bean.Menu">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+        <result column="is_menu" jdbcType="CHAR" property="isMenu"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="group_id" jdbcType="INTEGER" property="groupId"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="INTEGER" property="roleName"/>
+        <result column="is_delete" jdbcType="CHAR" property="isDelete"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, menu_name, menu_url, is_menu, parent_id, is_delete, create_by, create_at, update_by, 
+    update_at
+  </sql>
+
+
+    <sql id="Base_Column_List_menu_role">
+    m.id, m.menu_name, m.menu_url, m.is_menu, m.parent_id, g.is_delete, m.create_by, m.create_at, m.update_by,
+    m.update_at,g.role_id,g.id as group_id,r.role_name
+  </sql>
+
+    <sql id="Base_Column_List_by_role">
+    m.id, m.menu_name, m.menu_url, m.is_menu, m.parent_id, m.is_delete, m.create_by, m.create_at, m.update_by,
+    m.update_at
+  </sql>
+
+
+    <select id="selectByMenuSingle" parameterType="com.okay.testcenter.domain.bean.Menu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_menu
+        where 1=1
+        <if test="id != null">
+            and id=#{id,jdbcType=BIGINT}
+        </if>
+        <if test="menuName != null">
+            and menuName=#{menuName,jdbcType=VARCHAR}
+        </if>
+        <if test="menuUrl != null">
+            and menuUrl=#{menuUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="isMenu != null">
+            and isMenu=#{isMenu,jdbcType=CHAR}
+        </if>
+        <if test="parentId != null">
+            and parentId=#{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="isDelete != null">
+            and isDelete=#{isDelete,jdbcType=CHAR}
+        </if>
+        <if test="createBy != null">
+            and createBy=#{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createAt != null">
+            and createAt=#{createAt,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateBy != null">
+            and updateBy=#{updateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="updateAt != null">
+            and updateAt=#{updateAt,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="selectByMenu" parameterType="com.okay.testcenter.domain.bean.Menu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_menu
+        where 1=1
+        <if test="id != null">
+            and id=#{id,jdbcType=BIGINT}
+        </if>
+        <if test="menuName != null">
+            and menuName=#{menuName,jdbcType=VARCHAR}
+        </if>
+        <if test="menuUrl != null">
+            and menuUrl=#{menuUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="isMenu != null">
+            and isMenu=#{isMenu,jdbcType=CHAR}
+        </if>
+        <if test="parentId != null">
+            and parentId=#{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="isDelete != null">
+            and isDelete=#{isDelete,jdbcType=CHAR}
+        </if>
+        <if test="createBy != null">
+            and createBy=#{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createAt != null">
+            and createAt=#{createAt,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateBy != null">
+            and updateBy=#{updateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="updateAt != null">
+            and updateAt=#{updateAt,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+
+    <select id="selectByMenuNotDeleteByRole" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_by_role"/>
+        from xy_menu as m left join xy_group as g
+        ON m.id = g.menu_id
+        where m.is_delete = 0 AND g.is_delete=0 and m.menu_url IS NOT NULL
+        <if test="roleId != null">
+            and g.role_id = #{roleId,jdbcType=BIGINT}
+        </if>
+
+    </select>
+
+
+    <select id="selectByMenuByRole" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_menu_role"/>
+        from xy_menu as m left join xy_group as g
+        ON m.id = g.menu_id LEFT JOIN `xy_role` AS r ON g.role_id=r.id
+        where 1=1
+        <if test="roleId != null">
+            and g.role_id = #{roleId,jdbcType=BIGINT}
+        </if>
+
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_menu
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insertSelective" parameterType="com.okay.testcenter.domain.bean.Menu">
+        insert into xy_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="menuName != null">
+                menu_name,
+            </if>
+            <if test="menuUrl != null">
+                menu_url,
+            </if>
+            <if test="isMenu != null">
+                is_menu,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createAt != null">
+                create_at,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateAt != null">
+                update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="menuName != null">
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuUrl != null">
+                #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isMenu != null">
+                #{isMenu,jdbcType=CHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.okay.testcenter.domain.bean.Menu">
+        update xy_menu
+        <set>
+            <if test="menuName != null">
+                menu_name = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuUrl != null">
+                menu_url = #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isMenu != null">
+                is_menu = #{isMenu,jdbcType=CHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

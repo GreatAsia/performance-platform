@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.dubbo.DubboTestHistoryMapper">
+
+
+    <!--<insertTestHistory >-->
+    <insert id="insertTestHistory" parameterType="com.okay.testcenter.domain.dubbo.DubboTestHistory">
+        INSERT INTO dubbo_testhistry(ID,ENV,RESULT,TOTALCASE,PASSCASE,FAILCASE,STARTTIME,ENDTIME,MODELID)
+        values (#{id},#{env},#{result},#{totalCase},#{passCase},#{failCase},#{startTime},#{endTime},#{modelId})
+    </insert>
+
+
+    <!--<updateTestHistory>-->
+    <update id="updateTestHistory" parameterType="com.okay.testcenter.domain.dubbo.DubboTestHistory">
+        UPDATE dubbo_testhistry
+        SET ENV=#{env},RESULT=#{result},TOTALCASE=#{totalCase},PASSCASE=#{passCase},FAILCASE=#{failCase},STARTTIME=#{startTime},ENDTIME=#{endTime},MODELID=#{modelId}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteTestHistory>-->
+    <delete id="deleteTestHistory" parameterType="int">
+        DELETE FROM dubbo_testhistry
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findTestHistoryById>-->
+    <select id="findTestHistoryById" parameterType="int" resultType="com.okay.testcenter.domain.dubbo.DubboTestHistory">
+        SELECT d.id,d.env,d.result,d.totalCase,d.passCase,d.failCase,d.startTime,d.endTime,d.modelId, m.name AS modelName
+        FROM dubbo_testhistry d, dubbo_module m
+        WHERE d.modelId=m.id AND d.id=#{arg0}
+    </select>
+
+
+    <!--<findTestHistoryList>-->
+    <select id="findTestHistoryList" parameterType="com.okay.testcenter.domain.dubbo.DubboTestHistory"
+            resultType="com.okay.testcenter.domain.dubbo.DubboTestHistory">
+        SELECT d.id,d.env,d.result,d.totalCase,d.passCase,d.failCase,d.startTime,d.modelId, m.name AS modelName
+        FROM dubbo_testhistry d, dubbo_module m
+        WHERE d.modelId=m.id
+        ORDER BY id DESC
+    </select>
+
+
+    <!--<findTestHistoryListByModelIdAndEnv>-->
+    <select id="findTestHistoryListByModelIdAndEnv" parameterType="com.okay.testcenter.domain.dubbo.DubboTestHistory"
+            resultType="com.okay.testcenter.domain.dubbo.DubboTestHistory">
+        SELECT d.id,d.env,d.result,d.totalCase,d.passCase,d.failCase,d.startTime,d.modelId, m.name AS modelName
+        FROM dubbo_testhistry d, dubbo_module m
+        WHERE d.modelId=m.id AND d.modelId=#{param1} AND d.env LIKE #{param2}
+        ORDER BY d.id DESC
+    </select>
+
+
+    <!--<getLastTestHistoryId>-->
+    <select id="getLastTestHistoryId" parameterType="int" resultType="int">
+        SELECT ID
+        FROM dubbo_testhistry
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+
+</mapper>

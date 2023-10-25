@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleInterfaceMapper">
+
+
+    <!--<insertMiddleInterface >-->
+    <insert id="insertMiddleInterface" parameterType="com.okay.testcenter.domain.middle.MiddleInterface">
+      INSERT INTO middle_interface(ID,MODULE_ID,NAME,URL,REQUEST_METHOD,COMMENTS)
+      values (#{id},#{module_id},#{name},#{url},#{request_method},#{comments})
+    </insert>
+
+
+    <!--<updateMiddleInterface>-->
+    <update id="updateMiddleInterface" parameterType="com.okay.testcenter.domain.middle.MiddleInterface">
+        UPDATE middle_interface
+        SET MODULE_ID=#{module_id},NAME=#{name},URL=#{url},REQUEST_METHOD=#{request_method},COMMENTS=#{comments}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteMiddleInterface>-->
+    <delete id="deleteMiddleInterface" parameterType="int">
+        DELETE FROM middle_interface
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findMiddleInterfaceById>-->
+    <select id="findMiddleInterfaceById" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddleInterface">
+        SELECT ID,MODULE_ID,NAME,URL,REQUEST_METHOD,COMMENTS
+        from middle_interface
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findMiddleInterfaceByName>-->
+    <select id="findMiddleInterfaceByName" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddleInterface">
+        SELECT i.ID,i.MODULE_ID,i.NAME,i.URL,i.REQUEST_METHOD,i.COMMENTS,m.project_id
+        from middle_interface i,middle_module m
+        WHERE i.module_id=m.id and i.name like CONCAT('%',#{0},'%')
+    </select>
+
+
+    <!--<findMiddleInterfaceByPath>-->
+    <select id="findMiddleInterfaceByPath" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddleInterface">
+        SELECT i.ID,i.MODULE_ID,i.NAME,i.URL,i.REQUEST_METHOD,i.COMMENTS,m.project_id
+        from middle_interface i,middle_module m
+        WHERE i.module_id=m.id and i.url like CONCAT('%',#{0},'%')
+    </select>
+
+
+    <!--<findMiddleInterfaceList>-->
+    <select id="findMiddleInterfaceList" parameterType="com.okay.testcenter.domain.middle.MiddleInterface"
+            resultType="com.okay.testcenter.domain.middle.MiddleInterface">
+        SELECT ID,MODULE_ID,NAME,URL,REQUEST_METHOD,COMMENTS
+        from middle_interface
+    </select>
+
+
+    <!--<findMiddleInterfaceByModuleId>-->
+    <select id="findMiddleInterfaceByModuleId" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddleInterface">
+        SELECT i.ID,i.MODULE_ID,i.NAME,i.URL,i.REQUEST_METHOD,i.COMMENTS,m.project_id
+        from middle_interface i,middle_module m
+        WHERE i.module_id=m.id and i.module_id=#{0}
+    </select>
+
+
+</mapper>

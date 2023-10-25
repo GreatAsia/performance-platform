@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleTestHistoryMapper">
+
+
+    <!--<insertMiddleTestHistory >-->
+    <insert id="insertMiddleTestHistory" parameterType="com.okay.testcenter.domain.report.MiddleTestHistory"
+            useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO middle_testhistory(ID,ENV,RESULT,TOTALCASE,PASSCASE,FAILCASE,STARTTIME,ENDTIME,PROJECTID)
+      values (#{id},#{env},#{result},#{totalCase},#{passCase},#{failCase},#{startTime},#{endTime},#{projectId})
+    </insert>
+
+    <!--<updateMiddleTestHistory>-->
+    <update id="updateMiddleTestHistory" parameterType="com.okay.testcenter.domain.report.MiddleTestHistory">
+        UPDATE middle_testhistory
+        SET ENV=#{env},RESULT=#{result},TOTALCASE=#{totalCase},PASSCASE=#{passCase},FAILCASE=#{failCase},STARTTIME=#{startTime},ENDTIME=#{endTime},PROJECTID=#{projectId}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteMiddleTestHistory>-->
+    <delete id="deleteMiddleTestHistory" parameterType="int">
+        DELETE FROM middle_testhistory
+        WHERE ID=#{0}
+    </delete>
+
+    <!--<findMiddleTestHistoryById>-->
+    <select id="findMiddleTestHistoryById" parameterType="int"
+            resultType="com.okay.testcenter.domain.report.MiddleTestHistory">
+        SELECT  t.id,t.env,t.result,p.name as projectName,t.totalCase,t.passCase,t.failCase,t.startTime,t.endTime,t.projectId
+        from middle_testhistory t,middle_project p
+        WHERE t.projectId=p.id  and  t.id=#{0}
+    </select>
+
+
+    <!--<findMiddleTestHistoryList>-->
+    <select id="findMiddleTestHistoryList" parameterType="com.okay.testcenter.domain.report.MiddleTestHistory"
+            resultType="com.okay.testcenter.domain.report.MiddleTestHistory">
+        SELECT *
+        from middle_testhistory
+        ORDER BY id DESC
+    </select>
+
+
+    <!--<findMiddleTestHistoryByEnvAndProjectId>-->
+    <select id="findMiddleTestHistoryByEnvAndProjectId" parameterType="int"
+            resultType="com.okay.testcenter.domain.report.MiddleTestHistory">
+        SELECT t.id,t.env,t.result,p.name as projectName,t.totalCase,t.passCase,t.failCase,t.startTime,t.endTime,t.projectId
+        from middle_testhistory t,middle_project p
+        WHERE t.projectId=p.id  and t.env=#{param1} and t.projectId=#{param2}
+        ORDER BY id DESC
+    </select>
+
+
+    <!--<findLoginInfoByProjectAndEnv>-->
+    <select id="findLoginInfoByProjectAndEnv" parameterType="com.okay.testcenter.domain.middle.RequestSampler"
+            resultType="com.okay.testcenter.domain.middle.RequestSampler">
+        SELECT url_header,uname,pwd
+        from link_env_project
+        where project_id=#{param1} and env_id=#{param2}
+
+    </select>
+
+
+    <!--<getLastMiddleTestHistoryId>-->
+    <select id="getLastMiddleTestHistoryId" parameterType="int" resultType="int">
+        SELECT ID
+        FROM middle_testhistory
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+</mapper>

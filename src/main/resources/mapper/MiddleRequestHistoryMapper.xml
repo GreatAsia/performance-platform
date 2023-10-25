@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleRequestHistoryMapper">
+
+
+    <!--<insertMiddleRequestHistory >-->
+    <insert id="insertMiddleRequestHistory" parameterType="com.okay.testcenter.domain.report.MiddleRequestHistory">
+      INSERT INTO middle_requesthistory(ID,HISTORYID,INTERFACEID,REQUESTID,URL,CASENAME,REQUESTDATA,ENV,STARTTIME,ENDTIME,RESPONSECONTENT,RESULT,RESPONSECODE,ELAPSED_TIME)
+      values (#{id},#{historyId},#{interfaceId},#{requestId},#{url},#{caseName},#{requestData},#{env},#{startTime},#{endTime},#{responseContent},#{result},#{responseCode},#{elapsed_time})
+    </insert>
+
+
+    <!--<updateMiddleRequestHistory>-->
+    <update id="updateMiddleRequestHistory" parameterType="com.okay.testcenter.domain.report.MiddleRequestHistory">
+        UPDATE middle_requesthistory
+        SET HISTORYID=#{historyId},INTERFACEID=#{historyId},INTERFACEID=#{interfaceId},REQUESTID=#{requestId},URL=#{url},CASENAME=#{caseName},REQUESTDATA=#{requestData},ENV=#{env},STARTTIME=#{startTime},ENDTIME=#{endTime},RESPONSECONTENT=#{responseContent},RESULT=#{result},RESPONSECODE=#{responseCode},ELAPSED_TIME=#{elapsed_time}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteMiddleRequestHistory>-->
+    <delete id="deleteMiddleRequestHistory" parameterType="int">
+        DELETE FROM middle_requesthistory
+        WHERE ID=#{0}
+    </delete>
+
+    <!--<findMiddleRequestHistoryById>-->
+    <select id="findMiddleRequestHistoryById" parameterType="int"
+            resultType="com.okay.testcenter.domain.report.MiddleRequestHistory">
+        SELECT *
+        from middle_requesthistory
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findMiddleRequestHistoryList>-->
+    <select id="findMiddleRequestHistoryList" parameterType="com.okay.testcenter.domain.report.MiddleRequestHistory"
+            resultType="com.okay.testcenter.domain.report.MiddleRequestHistory">
+        SELECT *
+        from middle_requesthistory
+
+    </select>
+
+    <!--<findHistoryByHistoryId>-->
+    <select id="findHistoryByHistoryId" parameterType="com.okay.testcenter.domain.report.MiddleRequestHistory"
+            resultType="com.okay.testcenter.domain.report.MiddleRequestHistory">
+        SELECT *
+        from middle_requesthistory
+        where historyId=#{param1}
+         ORDER BY result
+    </select>
+
+
+    <!--<findMiddleRequestHistoryByInterfaceId>-->
+    <select id="findMiddleRequestHistoryByInterfaceId" parameterType="int"
+            resultType="com.okay.testcenter.domain.report.MiddleRequestHistory">
+        SELECT *
+        from middle_requesthistory
+        WHERE interfaceId=#{param1}
+        ORDER BY result
+    </select>
+
+
+</mapper>

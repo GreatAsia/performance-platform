@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/dubbo/dubbo.js}"></script>
+    <script type="text/javascript" th:src="@{/js/dubbo/dubboModel.js}"></script>
+</head>
+<body>
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item "><a>dubbo</a></li>
+                <li class="breadcrumb-item active"><a>dubbo-module</a></li>
+            </ol>
+
+            <!-- 按钮触发模态框 -->
+            <a href="javascript:void(0)" class="btn btn-primary "
+               onclick="showAddModal(this)">添加模块</a>
+
+            <!-- Table -->
+            <table class="table table-hover table-bordered table-condensed ">
+                <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>模块</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dubboModel: ${dubboModelList}">
+                    <td th:text="${dubboModel.getId()}"></td>
+                    <td th:text="${dubboModel.getName()}"></td>
+                    <td th:text="${dubboModel.getComments()}"></td>
+                    <td>
+                        <a href="javascript:void(0)"
+                           th:data-id="${dubboModel.id}"
+                           th:data-name="${dubboModel.name}"
+                           th:data-comments="${dubboModel.comments}" class="btn  btn-sm btn-info "
+                           onclick="showUpdateModal(this)">修改</a>
+
+                        <a href="javascript:void(0)" th:data-id="${dubboModel.id}" class="btn btn-sm btn-danger"
+                           onclick="showDeleteModal(this)">删除</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--添加模块的模态框-->
+<div th:replace="html/mainfragment :: addModal">
+</div>
+
+<!--删除模块确认的模态框-->
+<div th:replace="html/mainfragment :: deleteModal">
+</div>
+
+<!--修改模块模态框-->
+<div th:replace="html/mainfragment :: updateModal">
+</div>
+
+
+
+
+</body>
+
+
+</html>

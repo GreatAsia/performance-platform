@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.tool.AddUserHistoryMapper">
+
+
+    <!--<insertHistory >-->
+    <insert id="insertHistory" parameterType="com.okay.testcenter.domain.middle.AddUserHistory" useGeneratedKeys="true"
+            keyProperty="id">
+      INSERT INTO add_user_history(ID,USERTYPE,TOTALCOUNT,CREATETIME,UPDATETIME,ENVID)
+      values (#{id},#{userType},#{totalCount},#{createTime},#{updateTime},#{envId})
+    </insert>
+
+
+    <!--<updateHistory>-->
+    <update id="updateHistory" parameterType="com.okay.testcenter.domain.middle.AddUserHistory">
+        UPDATE add_user_history
+        SET USERTYPE=#{userType},TOTALCOUNT=#{totalCount},CREATETIME=#{createTime},UPDATETIME=#{updateTime},ENVID=#{envId}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteHistory>-->
+    <delete id="deleteHistory" parameterType="int">
+        DELETE FROM add_user_history
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findHistoryById>-->
+    <select id="findHistoryById" parameterType="int" resultType="com.okay.testcenter.domain.middle.AddUserHistory">
+        SELECT *
+        from add_user_history
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findHistoryList>-->
+    <select id="findHistoryList" parameterType="com.okay.testcenter.domain.middle.AddUserHistory"
+            resultType="com.okay.testcenter.domain.middle.AddUserHistory">
+        SELECT a.id,a.userType,a.totalCount,a.envId,e.name AS envName
+        FROM add_user_history a,env e
+        where a.envId=e.id
+        ORDER BY ID DESC
+    </select>
+
+
+    <!--<findHistoryByUserTypeAndEnvId>-->
+    <select id="findHistoryByUserTypeAndEnvId" parameterType="com.okay.testcenter.domain.middle.AddUserHistory"
+            resultType="com.okay.testcenter.domain.middle.AddUserHistory">
+        SELECT *
+        FROM add_user_history
+        WHERE  userType LIKE #{param1} AND envId=#{param2}
+    </select>
+
+</mapper>

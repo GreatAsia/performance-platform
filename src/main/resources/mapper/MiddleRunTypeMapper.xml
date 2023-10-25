@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleRunTypeMapper">
+
+
+    <!--<findMiddleRunTypeList>-->
+    <select id="findMiddleRunTypeList" parameterType="com.okay.testcenter.domain.middle.MiddleRunType"
+            resultType="com.okay.testcenter.domain.middle.MiddleRunType">
+        SELECT ID,NAME
+        FROM middle_run_type
+
+    </select>
+
+
+</mapper>

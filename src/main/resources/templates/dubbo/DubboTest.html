@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .string {
+            color: green;
+        }
+
+        .number {
+            color: darkorange;
+        }
+
+        .boolean {
+            color: blue;
+        }
+
+        .null {
+            color: magenta;
+        }
+
+        .key {
+            color: red;
+        }
+
+    </style>
+
+
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/dubbo/dubboTest.js}"></script>
+    <script type="text/javascript" th:src="@{/js/dubbo/dubbo.js}"></script>
+</head>
+<body>
+<nav th:replace="html/mainfragment :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div id="reportlist" class="col-md-10">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/api/home">home</a></li>
+                <li class="breadcrumb-item active"><a>dubbotest</a></li>
+            </ol>
+            <div class="row">
+                <div class="col-md-8">
+                    <table>
+                        <tr>
+                            <td class="text-right">测试环境:&nbsp&nbsp</td>
+                            <td>
+                                <select class="form-control" id="address" type="text" name="address"
+                                        style="height:35px;width:600px" onchange="getSvrList()">
+                                    <option th:each="list:${envList}" th:value="${list.id}"
+                                            th:text="${list.name }" ></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">模块名称:&nbsp&nbsp</td>
+                            <td>
+                                <select style="height:35px;width:600px" class="form-control" id="addModelId"
+                                        name="addModelId" onchange="getServerList()">
+                                    <option th:each="list:${listSvr}"
+                                            th:text="${list}"></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr class="th-inner">
+                            <td class="text-right">服务名称:&nbsp&nbsp</td>
+                            <td>
+                                <select style="height:35px;width:600px" class="form-control" id="addInterFaceClassName"
+                                        name="addInterFaceClassName" onchange="getServerInfo()">
+                                    <option th:each="list:${serverList}"
+                                            th:text="${list}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">方法名称:&nbsp&nbsp</td>
+                            <td><select style="height:35px;width:600px" class="form-control" id="addMethodName"
+                                        name="addMethodName">
+                                <option th:each="list:${dubboCase.methodList}"
+                                        th:text="${list}"></option>
+                            </select>
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">参数类型:&nbsp&nbsp</td>
+                            <td><input class="form-control" id="addRequestType" type="text" name="modelComments"
+                                       style="height:35px;width:600px">
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">请求参数:&nbsp&nbsp</td>
+                            <td>
+                                <textarea id="addParams" class="form-control text-left" type="text" name="params" rows="3"></textarea>
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">版本:&nbsp&nbsp</td>
+                            <td>
+                                <input class="form-control" id="addVersion" type="text" name="modelComments"
+                                       style="height:35px;width:600px"
+                                       placeholder="3.0.0" th:value="${dubboCase.version}">
+                            </td>
+                        </tr>
+
+                        <tr class="th-inner">
+                            <td class="text-right">用例类型:&nbsp&nbsp</td>
+                            <td>
+                                <select class="form-control" id="addType" type="text" name="addType"
+                                        style="height:35px;width:600px">
+                                    <option>0</option>
+                                    <option>1</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">用例名称:&nbsp&nbsp</td>
+                            <td><input class="form-control" id="addCaseName" type="text" name="modelName"
+                                       style="height:35px;width:600px">
+                            </td>
+                        </tr>
+                        <tr class="th-inner">
+                            <td class="text-right">验证数据:&nbsp&nbsp</td>
+                            <td><input class="form-control" id="addCheckDate" type="text" name="modelComments"
+                                       style="height:35px;width:600px"
+                                       placeholder="&quot;code&quot;:0" value="&quot;code&quot;:0">
+                            </td>
+                        </tr>
+
+                    </table>
+                    <br/>
+                    <hr>
+                    <div>
+                        <div id="result"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="row">
+                        <div>
+                            <button style="font-size:16px;font-weight: 500;" id="send"
+                                    class="btn btn-large btn-primary "
+                                    onclick="sendRequest()">
+                                Send
+                            </button>
+                        </div>
+                        &nbsp&nbsp
+                        <div>
+                            <!-- 按钮触发模态框 -->
+                            <button style="font-size:16px;font-weight: 500;" id="addInterfaceID"
+                                    class="btn btn-large btn-info" onclick="addDubboCase()">
+                                AddCase
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $("input").css("background", "rgba(255,255,255,0.1)");
+</script>
+
+
+</body>
+
+
+</html>

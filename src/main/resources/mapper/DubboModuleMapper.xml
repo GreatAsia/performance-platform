@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.dubbo.DubboModelMapper">
+
+
+    <!--<insertModel >-->
+    <insert id="insertModel" parameterType="com.okay.testcenter.domain.dubbo.DubboModule" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO dubbo_module(ID,NAME,COMMENTS)
+      values (#{id},#{name},#{comments})
+    </insert>
+
+    <!--<updateModel>-->
+    <update id="updateModel" parameterType="com.okay.testcenter.domain.dubbo.DubboModule">
+        UPDATE dubbo_module
+        SET NAME=#{name},COMMENTS=#{comments}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteModel>-->
+    <delete id="deleteModel" parameterType="int">
+        DELETE FROM dubbo_module
+        WHERE ID=#{0}
+    </delete>
+
+    <!--<findModelById>-->
+    <select id="findModelById" parameterType="int" resultType="com.okay.testcenter.domain.dubbo.DubboModule">
+        SELECT ID,NAME,COMMENTS
+        from dubbo_module
+        WHERE ID=#{0}
+    </select>
+
+    <!--<findModelByName>-->
+    <select id="findModelByName" parameterType="string" resultType="com.okay.testcenter.domain.dubbo.DubboModule">
+        SELECT ID,NAME,COMMENTS
+        from dubbo_module
+        WHERE NAME like #{0}
+    </select>
+
+
+    <!--<findModelList>-->
+    <select id="findModelList" parameterType="com.okay.testcenter.domain.dubbo.DubboModule"
+            resultType="com.okay.testcenter.domain.dubbo.DubboModule">
+        SELECT ID,NAME,COMMENTS
+        from dubbo_module
+    </select>
+
+
+</mapper>

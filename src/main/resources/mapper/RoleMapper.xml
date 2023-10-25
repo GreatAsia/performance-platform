@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.user.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.okay.testcenter.domain.bean.Role">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="is_delete" jdbcType="CHAR" property="isDelete"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_at" jdbcType="DATE" property="createAt"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_at" jdbcType="DATE" property="updateAt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, role_name, role_code, is_delete, create_by, create_at, update_by, update_at
+  </sql>
+    <select id="selectByRoleSingle" parameterType="com.okay.testcenter.domain.bean.Role" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_role where 1=1
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="roleName != null">
+            and role_name = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleCode != null">
+            and role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="isDelete != null">
+            and is_delete = #{isDelete,jdbcType=CHAR}
+        </if>
+        <if test="createBy != null">
+            and create_by = #{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createAt != null">
+            and create_at = #{createAt,jdbcType=DATE}
+        </if>
+        <if test="updateBy != null">
+            and update_by = #{updateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="updateAt != null">
+            and update_at = #{updateAt,jdbcType=DATE},
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectByRole" parameterType="com.okay.testcenter.domain.bean.Role" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_role where 1=1
+        <if test="id != null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="roleName != null">
+            and role_name = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleCode != null">
+            and role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="isDelete != null">
+            and is_delete = #{isDelete,jdbcType=CHAR}
+        </if>
+        <if test="createBy != null">
+            and create_by = #{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createAt != null">
+            and create_at = #{createAt,jdbcType=DATE}
+        </if>
+        <if test="updateBy != null">
+            and update_by = #{updateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="updateAt != null">
+            and update_at = #{updateAt,jdbcType=DATE},
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_role
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <insert id="insertSelective" parameterType="com.okay.testcenter.domain.bean.Role">
+        insert into xy_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="roleCode != null">
+                role_code,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createAt != null">
+                create_at,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateAt != null">
+                update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleCode != null">
+                #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                #{createAt,jdbcType=DATE},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                #{updateAt,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.okay.testcenter.domain.bean.Role">
+        update xy_role
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleCode != null">
+                role_code = #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=DATE},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

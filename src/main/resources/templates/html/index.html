@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="html/mainfragment :: head"></head>
+    <script type="text/javascript" th:src="@{/js/html/homePage.js}"></script>
+</head>
+
+
+<body>
+<nav th:replace="html/mainfragment :: navbar"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <nav th:replace="html/mainfragment :: letf_nav"></nav>
+        </div>
+
+        <div class="col-md-10">
+
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a>/HOME</a></li>
+
+            </ol>
+
+            <div class="row col-md-10">
+
+                <div class="col-md-10">
+                    <div>
+                        <a><strong><h4>压力测试规范</h4></strong></a>
+                    </div>
+                    <hr>
+                </div>
+                <div class="col-md-10">
+                    <div>
+                        <a><strong><h5>压测类型</h5></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>一 基准测试
+
+                            线程数为1的时候，请求一段时间(如:1分钟)， 获取平均响应时间、吞吐量、报错率 的数据。</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>二 并发测试
+
+                            进程/线程数为N的时候，请求一段时间(如:5-10分钟)，获取平均响应时间、吞吐量、报错率 的数据。</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>三 负载测试
+
+                            逐步增加并发数，请求一段时间(如:5-10分钟)，看服务最大能承受的并发量是多少，关注点是How Much。</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>四 稳定性测试
+
+                            长时间压力测试下(如: 2-5小时,或者一晚上)，系统的查看系统的稳定性。</h6></strong></a>
+                    </div>
+
+
+                    <hr>
+                </div>
+
+                <div class="col-md-10">
+                    <div>
+                        <a><strong><h5>压测标准</h5></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>并发数: 读 200  写 100，可根据实际情况调整</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>错误率:0 （必须是0）</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>平均响应时间: 2秒之内</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>吞吐量: >=50</h6></strong></a>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-10">
+                    <div>
+                        <a><strong><h5>压测监控</h5></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>被压服务器的CPU 内存  IO 占用率，可写在测试报告中</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>监控地址: https://grafana-k8s.xk12.cn/d/HHcTjX3Zk/pods?orgId=1&var-namespace=dev&var-pod=user-svr-7b847786f4-88g85&var-container=All
+
+                        </h6></strong></a>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="col-md-10">
+                    <div>
+                        <a><strong><h5>压测过程中需要关注的问题:</h5></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>1  压测的接口如果写队列，压完后一定要检查多久可以把队列处理完，写到报告中</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>2  数据库异常:死锁/重启，接口测试和压测过程中，如果数据库出现异常情况，一定要重视，写到报告中</h6></strong></a>
+                    </div>
+                    <div>
+                        <a><strong><h6>3  服务重启：接口测试和压测过程中，如果服务进程重启，要排查和追踪到问题，写到报告中 </h6></strong></a>
+                    </div>
+                    <hr>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<canvas class="my-4" id="meChart" width="900" height="50"></canvas>
+<footer th:replace="html/mainfragment :: footer"></footer>
+</body>
+
+
+</html>

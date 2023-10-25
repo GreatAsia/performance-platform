@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddleProjectMapper">
+
+
+    <!--<insertMiddleProject >-->
+    <insert id="insertMiddleProject" parameterType="com.okay.testcenter.domain.middle.MiddleProject">
+      INSERT INTO middle_project(ID,NAME,LOGINPARAM,SECRETURL,LOGINTYPE,RUNTYPE,LOGINURL,REQUESTPRE)
+      values (#{id},#{name},#{loginParam},#{secretUrl},#{loginType},#{runType},#{loginUrl},#{requestPre})
+    </insert>
+
+
+    <!--<updateMiddleProject>-->
+    <update id="updateMiddleProject" parameterType="com.okay.testcenter.domain.middle.MiddleProject">
+        UPDATE middle_project
+        SET NAME=#{name},LOGINPARAM=#{loginParam},SECRETURL=#{secretUrl},LOGINTYPE=#{loginType},RUNTYPE=#{runType},LOGINURL=#{loginUrl},REQUESTPRE=#{requestPre}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<deleteMiddleProject>-->
+    <delete id="deleteMiddleProject" parameterType="int">
+        DELETE FROM middle_project
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findMiddleProjectById>-->
+    <select id="findMiddleProjectById" parameterType="int" resultType="com.okay.testcenter.domain.middle.MiddleProject">
+        SELECT p.ID,p.NAME,p.LOGINPARAM,p.SECRETURL,p.LOGINTYPE,p.RUNTYPE,p.LOGINURL,p.REQUESTPRE,l.name AS loginTypeName, r.name AS runTypeName
+        FROM middle_project p, middle_login_type l, middle_run_type r
+        WHERE p.loginType=l.id AND p.runType=r.id and  p.ID=#{0}
+
+    </select>
+
+    <!--<findMiddleProjectByName>-->
+    <select id="findMiddleProjectByName" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddleProject">
+        SELECT ID,NAME,LOGINPARAM,SECRETURL,LOGINTYPE,RUNTYPE,LOGINURL,REQUESTPRE
+        from middle_project
+        WHERE name like #{0}
+    </select>
+
+
+    <!--<findMiddleProjectList>-->
+    <select id="findMiddleProjectList" parameterType="com.okay.testcenter.domain.middle.MiddleProject"
+            resultType="com.okay.testcenter.domain.middle.MiddleProject">
+        SELECT p.ID,p.NAME,p.LOGINPARAM,p.SECRETURL,p.LOGINTYPE,p.RUNTYPE,p.LOGINURL,p.REQUESTPRE,l.name AS loginTypeName, r.name AS runTypeName
+        FROM middle_project p, middle_login_type l, middle_run_type r
+        WHERE p.loginType=l.id AND p.runType=r.id
+
+    </select>
+
+
+</mapper>

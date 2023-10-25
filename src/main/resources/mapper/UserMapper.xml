@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.user.UserMapper">
+    <resultMap id="BaseResultMap" type="com.okay.testcenter.domain.bean.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail"/>
+        <result column="user_password" jdbcType="VARCHAR" property="userPassword"/>
+        <result column="position" jdbcType="VARCHAR" property="position"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="sex" jdbcType="CHAR" property="sex"/>
+        <result column="is_delete" jdbcType="CHAR" property="isDelete"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_name, user_email, user_password, position, role_id, sex, is_delete, create_by, 
+    update_by, create_at, update_at
+  </sql>
+
+
+    <sql id="Base_Column_List_role_user">
+    u.id, u.user_name, u.user_email, u.user_password, u.position, u.role_id, r.role_name,u.sex, u.is_delete, u.create_by,
+    u.update_by, u.create_at, u.update_at
+  </sql>
+
+
+    <select id="selectByUserSingle" parameterType="com.okay.testcenter.domain.bean.User" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_user where 1=1
+        <if test="userName != null and userName !=''">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="userEmail != null and userEmail !=''">
+            and user_email = #{userEmail,jdbcType=VARCHAR}
+        </if>
+        <if test="userPassword != null and userPassword !=''">
+            and user_password = #{userPassword,jdbcType=VARCHAR}
+        </if>
+        <if test="position != null and position !=''">
+            and position = #{position,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId != null and roleId !=''">
+            and role_id = #{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="sex != null and sex !=''">
+            and sex = #{sex,jdbcType=CHAR}
+        </if>
+        <if test="isDelete != null and isDelete !=''">
+            and is_delete = #{isDelete,jdbcType=CHAR}
+        </if>
+        <if test="createBy != null and createBy !=''">
+            and create_by = #{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="updateBy != null and updateBy !=''">
+            and update_by = #{updateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createAt != null and createAt !=''">
+            and create_at = #{createAt,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateAt != null and updateAt !=''">
+            and update_at = #{updateAt,jdbcType=TIMESTAMP}
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectUserRoleByUser" parameterType="com.okay.testcenter.domain.bean.User" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_role_user"/>
+        from xy_user as u left join xy_role as r on u.role_id=r.id
+        where r.is_delete=0
+        <if test="id != null and id !=''">
+            and u.id = #{id,jdbcType=VARCHAR}
+        </if>
+        <if test="userName != null and userName !=''">
+            and u.user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="userEmail != null and userEmail !=''">
+            and u.user_email = #{userEmail,jdbcType=VARCHAR}
+        </if>
+        <if test="userPassword != null and userPassword !=''">
+            and u.user_password = #{userPassword,jdbcType=VARCHAR}
+        </if>
+        <if test="position != null and position !=''">
+            and u.position = #{position,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId != null and roleId !=''">
+            and u.role_id = #{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="sex != null and sex !=''">
+            and u.sex = #{sex,jdbcType=CHAR}
+        </if>
+        <if test="isDelete != null and isDelete !=''">
+            and u.is_delete = #{isDelete,jdbcType=CHAR}
+        </if>
+        limit 1
+    </select>
+
+
+    <select id="selectByUser" parameterType="com.okay.testcenter.domain.bean.User" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_user where is_delete = #{isDelete,jdbcType=CHAR}
+        <if test="userName != null and userName !=''">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="userEmail != null and userEmail !=''">
+            and user_email = #{userEmail,jdbcType=VARCHAR}
+        </if>
+        <if test="userPassword != null and userPassword !=''">
+            and user_password = #{userPassword,jdbcType=VARCHAR}
+        </if>
+        <if test="position != null and position !=''">
+            and position = #{position,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId != null and roleId !=''">
+            and role_id = #{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="sex != null and sex !=''">
+            and sex = #{sex,jdbcType=CHAR}
+        </if>
+        <if test="createBy != null and createBy !=''">
+            and create_by = #{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="updateBy != null and updateBy !=''">
+            and update_by = #{updateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createAt != null and createAt !=''">
+            and create_at = #{createAt,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateAt != null and updateAt !=''">
+            and update_at = #{updateAt,jdbcType=TIMESTAMP}
+        </if>
+
+    </select>
+
+
+    <select id="selectUserAndRoleByPage" parameterType="com.okay.testcenter.domain.bean.User" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_role_user"/>
+        from xy_user as u left join xy_role as r on u.role_id=r.id
+        where r.is_delete=0
+        <if test="id != null and id !=''">
+            and u.id = #{id,jdbcType=VARCHAR}
+        </if>
+        <if test="userName != null and userName !=''">
+            and u.user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="userEmail != null and userEmail !=''">
+            and u.user_email = #{userEmail,jdbcType=VARCHAR}
+        </if>
+        <if test="userPassword != null and userPassword !=''">
+            and u.user_password = #{userPassword,jdbcType=VARCHAR}
+        </if>
+        <if test="position != null and position !=''">
+            and u.position = #{position,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId != null and roleId !=''">
+            and u.role_id = #{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="sex != null and sex !=''">
+            and u.sex = #{sex,jdbcType=CHAR}
+        </if>
+        <if test="isDelete != null and isDelete !=''">
+            and u.is_delete = #{isDelete,jdbcType=CHAR}
+        </if>
+        order by id desc
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xy_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="com.okay.testcenter.domain.bean.User">
+        insert into xy_user (
+        <if test="userName != null">
+            user_name,
+        </if>
+        <if test="userEmail != null">
+            user_email,
+        </if>
+        <if test="userPassword != null">
+            user_password,
+        </if>
+        <if test="position != null">
+            position,
+        </if>
+        <if test="roleId != null">
+            role_id,
+        </if>
+        <if test="sex != null">
+            sex,
+        </if>
+        <if test="isDelete != null">
+            is_delete,
+        </if>
+        <if test="updateBy != null">
+            update_by,
+        </if>
+        <if test="createAt != null">
+            create_at,
+        </if>
+        <if test="updateAt != null">
+            update_at,
+        </if>
+        create_by
+        )values(
+        <if test="userName != null">
+            #{userName,jdbcType=VARCHAR},
+        </if>
+        <if test="userEmail != null">
+            #{userEmail,jdbcType=VARCHAR},
+        </if>
+        <if test="userPassword != null">
+            #{userPassword,jdbcType=VARCHAR},
+        </if>
+        <if test="position != null">
+            #{position,jdbcType=VARCHAR},
+        </if>
+        <if test="roleId != null">
+            #{roleId,jdbcType=INTEGER},
+        </if>
+        <if test="sex != null">
+            #{sex,jdbcType=CHAR},
+        </if>
+        <if test="isDelete != null">
+            #{isDelete,jdbcType=CHAR},
+        </if>
+        <if test="updateBy != null">
+            #{updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="createAt != null">
+            #{createAt,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateAt != null">
+            #{updateAt,jdbcType=TIMESTAMP},
+        </if>
+        #{createBy,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.okay.testcenter.domain.bean.User">
+        update xy_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null">
+                position = #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=CHAR},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.okay.testcenter.mapper.slave.StressTestSlaveMapper">
+
+    <resultMap id="StressTestSlaveEntityRstMap" type="com.okay.testcenter.domain.slave.StressTestSlaveEntity">
+        <id column="slave_id" property="slaveId"/>
+        <result column="slave_name" property="slaveName"/>
+        <result column="ip" property="ip"/>
+        <result column="jmeter_port" property="jmeterPort"/>
+        <result column="user_name" property="userName"/>
+        <result column="passwd" property="passwd"/>
+        <result column="ssh_port" property="sshPort"/>
+        <result column="home_dir" property="homeDir"/>
+        <result column="weight" property="weight"/>
+        <result column="add_by" property="addBy"/>
+
+    </resultMap>
+
+
+    <select id="queryObject" resultType="com.okay.testcenter.domain.slave.StressTestSlaveEntity">
+        select * from test_stress_slave where slave_id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.okay.testcenter.domain.slave.StressTestSlaveEntity">
+        select * from test_stress_slave
+        <where>
+            <if test="slaveName != null and slaveName.trim() != ''">
+                slave_name like concat('%', #{slaveName}, '%')
+            </if>
+            <if test="status != null">
+                `status` = #{status}
+            </if>
+            <if test="slaveIds != null and slaveIds.trim() != ''">
+                and slave_id in ( ${slaveIds} )
+            </if>
+        </where>
+        <if test="sidx != null and sidx.trim() != ''">
+            order by ${sidx} ${order}
+        </if>
+        <if test="offset != null and limit != null ">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="list" resultMap="StressTestSlaveEntityRstMap">
+        select * from test_stress_slave
+
+    </select>
+
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from test_stress_slave
+        <where>
+            <if test="slaveName != null and slaveName.trim() != ''">
+                slave_name like concat('%', #{slaveName}, '%')
+            </if>
+            <if test="status != null">
+                `status` = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.okay.testcenter.domain.slave.StressTestSlaveEntity" useGeneratedKeys="true"
+            keyProperty="slaveId">
+        insert into test_stress_slave
+        (
+        `slave_name`,
+        `ip`,
+        `jmeter_port`,
+        `user_name`,
+        `passwd`,
+        `ssh_port`,
+        `home_dir`,
+        `weight`,
+        `add_by`
+        )
+        values
+        (
+        #{slaveName},
+        #{ip},
+        #{jmeterPort},
+        #{userName},
+        #{passwd},
+        #{sshPort},
+        #{homeDir},
+        #{weight},
+        #{addBy}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.okay.testcenter.domain.slave.StressTestSlaveEntity">
+        update test_stress_slave
+        <set>
+            <if test="slaveName != null">`slave_name` = #{slaveName},</if>
+            <if test="ip != null">`ip` = #{ip},</if>
+            <if test="jmeterPort != null">`jmeter_port` = #{jmeterPort},</if>
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="passwd != null">`passwd` = #{passwd},</if>
+            <if test="sshPort != null">`ssh_port` = #{sshPort},</if>
+            <if test="homeDir != null">`home_dir` = #{homeDir},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="weight != null">`weight` = #{weight},</if>
+            <if test="updateBy != null">`update_by` = #{updateBy},</if>
+        </set>
+        where slave_id = #{slaveId}
+    </update>
+
+    <!-- 批量更新状态 -->
+    <update id="updateBatch">
+        update test_stress_slave set status = #{status} where slave_id in
+        <foreach item="slaveId" collection="list" open="(" separator="," close=")">
+            #{slaveId}
+        </foreach>
+    </update>
+
+    <delete id="deleteBatch">
+        delete from test_stress_slave where slave_id in
+        <foreach item="slaveId" collection="array" open="(" separator="," close=")">
+            #{slaveId}
+        </foreach>
+    </delete>
+
+</mapper>

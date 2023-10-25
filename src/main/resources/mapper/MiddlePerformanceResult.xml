@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.okay.testcenter.mapper.middle.MiddlePerformanceResultMapper">
+
+
+    <!--<insert >-->
+    <insert id="insert" parameterType="com.okay.testcenter.domain.middle.MiddlePerformanceResult">
+      INSERT INTO middle_performance_result(ID,CASE_ID,ERROR_RATE,RESPONSE_TIME,THROUGHPUT,START_TIME,END_TIME,RUN_ID,SET_ID,RUN_TIME,THREADS,ERROR_DATA,MAX_TIME,MIN_TIME,TOTAL_REQUEST)
+      values (#{id},#{case_id},#{error_rate},#{response_time},#{throughput},#{start_time},#{end_time},#{run_id},#{set_id},#{run_time},#{threads},#{error_data},#{max_time},#{min_time},#{total_request})
+    </insert>
+
+
+    <!--<update>-->
+    <update id="update" parameterType="com.okay.testcenter.domain.middle.MiddlePerformanceResult">
+        UPDATE middle_performance_result
+        SET CASE_ID=#{case_id},ERROR_RATE=#{error_rate},RESPONSE_TIME=#{response_time},THROUGHPUT=#{throughput},START_TIME=#{start_time},END_TIME=#{end_time},RUN_ID=#{run_id},SET_ID=#{set_id},RUN_TIME=#{run_time},THREADS=#{threads},ERROR_DATA=#{error_data},MAX_TIME=#{max_time},MIN_TIME=#{min_time},TOTAL_REQUEST=#{total_request}
+        WHERE ID=#{id}
+    </update>
+
+    <!--<delete>-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM middle_performance_result
+        WHERE ID=#{0}
+    </delete>
+
+
+    <!--<findByCaseId>-->
+    <select id="findByCaseId" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceResult">
+        SELECT p.ID,p.CASE_ID,p.ERROR_RATE,p.RESPONSE_TIME,p.THROUGHPUT,p.START_TIME,p.END_TIME,p.RUN_ID,p.SET_ID,m.name as case_name,p.max_time,p.min_time,p.total_request
+        FROM middle_performance_result p,middle_case m
+        WHERE p.case_id=m.id AND p.case_id=#{0}
+
+    </select>
+
+
+    <!--<findByRunId>-->
+    <select id="findByRunId" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceResult">
+        SELECT p.ID,p.CASE_ID,p.ERROR_RATE,p.RESPONSE_TIME,p.THROUGHPUT,p.START_TIME,p.END_TIME,p.RUN_ID,p.SET_ID,p.RUN_TIME,p.THREADS,p.ERROR_DATA as error_data,m.name as case_name,p.max_time,p.min_time,p.total_request
+        FROM middle_performance_result p,middle_case m
+        WHERE p.case_id=m.id AND p.run_id=#{0}
+
+    </select>
+
+
+    <!--<findById>-->
+    <select id="findById" parameterType="int"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceResult">
+        SELECT *
+        from middle_performance_result
+        WHERE ID=#{0}
+    </select>
+
+
+    <!--<findList>-->
+    <select id="findList" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceResult">
+        SELECT p.ID,p.CASE_ID,p.ERROR_RATE,p.RESPONSE_TIME,p.THROUGHPUT,p.START_TIME,p.END_TIME,p.RUN_ID,p.SET_ID,p.ERROR_DATA,m.name as case_name,p.max_time,p.min_time,p.total_request
+        FROM middle_performance_result p,middle_case m
+        WHERE p.case_id=m.id
+        ORDER BY p.id DESC
+    </select>
+
+
+    <!--<getLastRunId>-->
+    <select id="getLastRunId" parameterType="int" resultType="int">
+        SELECT RUN_ID
+        from middle_performance_result
+        ORDER BY run_id DESC LIMIT 1
+    </select>
+
+    <!--<findRunIdList>-->
+    <select id="findRunIdList" parameterType="string"
+            resultType="com.okay.testcenter.domain.middle.MiddlePerformanceSet">
+        SELECT p.RUN_ID,p.SET_ID,s.PLAN_SET,s.SET_NAME
+        FROM middle_performance_result p,middle_performance_set s
+        WHERE p.set_id=s.id
+        ORDER BY p.run_id DESC
+    </select>
+
+
+
+
+</mapper>
